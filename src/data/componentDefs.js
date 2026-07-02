@@ -31,7 +31,7 @@ export const componentDefs = [
     icon: 'Drama',
     promptLabel: 'Rol',
     definition:
-      'Qué "personaje" o expertise tiene que asumir la IA para responder. Ayuda a que use el vocabulario y el criterio correctos.',
+      'Qué "perfil" o expertise tiene que asumir la IA para responder. Ayuda a que use el vocabulario y el criterio correctos.',
     example:
       'Ejemplo: "Actuá como un abogado laboralista con 10 años de experiencia en Argentina."',
   },

@@ -6,6 +6,10 @@ build/
 .env.local
 .env.*.local
 *.local
+.claude
+.docs
+.gitignore
+
 
 .vscode/*
 !.vscode/extensions.json
