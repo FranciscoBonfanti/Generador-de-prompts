@@ -1,0 +1,157 @@
+.component-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-card);
+  transition: opacity var(--transition-base);
+}
+
+.component-card--essential {
+  border-left: 4px solid var(--color-essential-badge);
+}
+
+.component-card--complement {
+  border-left: 4px solid var(--color-complement-badge);
+}
+
+.component-card--inactive {
+  opacity: 0.55;
+}
+
+.component-card--inactive .component-card__title {
+  text-decoration: line-through;
+  text-decoration-color: var(--color-text-muted);
+}
+
+.component-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.component-card__title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.component-card__icon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.component-card__title {
+  font-size: var(--font-size-md);
+}
+
+.component-card__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.component-card__toggle input {
+  cursor: pointer;
+}
+
+.component-card__info-button,
+.component-card__suggestions-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-base);
+}
+
+.component-card__info-button:hover,
+.component-card__suggestions-button:hover {
+  background-color: var(--color-surface-alt);
+}
+
+.component-card__info-panel {
+  margin-top: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-surface-alt);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+.component-card__info-panel p {
+  margin: 0 0 var(--space-xs);
+}
+
+.component-card__info-panel p:last-child {
+  margin-bottom: 0;
+}
+
+.component-card__info-example {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.component-card__textarea {
+  display: block;
+  width: 100%;
+  margin-top: var(--space-sm);
+  padding: var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  resize: vertical;
+}
+
+.component-card__suggestions-block {
+  margin-top: var(--space-xs);
+}
+
+.component-card__suggestions-list {
+  list-style: none;
+  margin: var(--space-sm) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.component-card__suggestion-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  padding: var(--space-sm);
+  background-color: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-base);
+}
+
+.component-card__suggestion-item:hover {
+  border-color: var(--color-primary);
+}
+
+.component-card__suggestion-label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.component-card__suggestion-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}

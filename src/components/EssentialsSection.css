@@ -1,0 +1,38 @@
+.essentials-section {
+  margin-bottom: var(--space-xl);
+}
+
+.essentials-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.essentials-section__badge {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-essential-badge);
+  background-color: var(--color-surface-alt);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 999px;
+}
+
+.essentials-section__hint {
+  margin: var(--space-xs) 0 var(--space-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.essentials-section__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+@media (min-width: 900px) {
+  .essentials-section__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
