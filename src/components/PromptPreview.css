@@ -1,48 +1,32 @@
 .prompt-preview {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   padding: var(--space-lg);
   box-shadow: var(--shadow-card);
   position: sticky;
   top: var(--space-lg);
 }
 
-.prompt-preview__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
+.prompt-preview .gradient-bar {
   margin-bottom: var(--space-md);
-}
-
-.prompt-preview__progress {
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  color: var(--color-essential-badge);
-  background-color: var(--color-surface-alt);
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: 999px;
 }
 
 .prompt-preview__box {
   background-color: var(--color-surface-alt);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   padding: var(--space-md);
   min-height: 160px;
 }
 
-.prompt-preview__text {
-  white-space: pre-wrap;
-  font-family: var(--font-family-base);
+.prompt-preview__row {
+  margin: 0 0 var(--space-md);
   font-size: var(--font-size-base);
-  margin: 0;
+  line-height: 1.5;
 }
 
-.prompt-preview__empty {
-  color: var(--color-text-muted);
-  margin: 0;
+.prompt-preview__row:last-child {
+  margin-bottom: 0;
 }
 
 .prompt-preview__count {
@@ -94,8 +78,8 @@
 }
 
 .prompt-preview__actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-sm);
   margin-top: var(--space-md);
 }
@@ -103,13 +87,16 @@
 .prompt-preview__button {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-xs);
   padding: var(--space-sm) var(--space-md);
   font-size: var(--font-size-sm);
+  font-weight: 600;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background-color: var(--color-surface);
   color: var(--color-text);
+  transition: background-color var(--transition-base), border-color var(--transition-base);
 }
 
 .prompt-preview__button:hover {
@@ -117,15 +104,28 @@
 }
 
 .prompt-preview__button--primary {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
-  color: var(--color-primary-contrast);
+  background: var(--gradient-brand);
+  border-color: transparent;
+  color: #ffffff;
+  border-radius: var(--radius-lg);
 }
 
 .prompt-preview__button--primary:hover {
-  background-color: var(--color-primary-hover);
+  filter: brightness(1.06);
 }
 
 .prompt-preview__button--danger {
   color: var(--color-danger);
+  border-color: var(--color-border);
+}
+
+.prompt-preview__button--danger:hover {
+  background-color: var(--color-warning-bg);
+  border-color: var(--color-danger);
+}
+
+@media (max-width: 480px) {
+  .prompt-preview__actions {
+    grid-template-columns: 1fr;
+  }
 }

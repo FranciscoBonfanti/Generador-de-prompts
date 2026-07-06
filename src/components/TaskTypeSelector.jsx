@@ -7,7 +7,11 @@ export function TaskTypeSelector() {
 
   return (
     <section className="task-type-selector" aria-labelledby="task-type-selector-label">
-      <label id="task-type-selector-label" htmlFor="task-type-select" className="task-type-selector__label">
+      <label
+        id="task-type-selector-label"
+        htmlFor="task-type-select"
+        className="task-type-selector__label gradient-bar"
+      >
         Tipo de tarea
       </label>
       <select

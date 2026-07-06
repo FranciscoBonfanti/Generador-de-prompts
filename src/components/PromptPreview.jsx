@@ -7,9 +7,27 @@ import {
   getMissingEssentials,
   countWords,
 } from '../utils/promptFormatter.js'
-import { essentialComponentDefs } from '../data/componentDefs.js'
+import { essentialComponentDefs, complementComponentDefs } from '../data/componentDefs.js'
 import { ExampleModal } from './ExampleModal.jsx'
 import './PromptPreview.css'
+
+function getPreviewRows(componentState) {
+  const rows = essentialComponentDefs.map((componentDef) => ({
+    key: componentDef.id,
+    label: componentDef.promptLabel,
+    content: componentState[componentDef.id]?.content.trim() || '',
+  }))
+
+  for (const componentDef of complementComponentDefs) {
+    const entry = componentState[componentDef.id]
+    const content = entry?.content.trim() || ''
+    if (entry?.active && content) {
+      rows.push({ key: componentDef.id, label: componentDef.promptLabel, content })
+    }
+  }
+
+  return rows
+}
 
 export function PromptPreview() {
   const { state, resetAll } = usePromptContext()
@@ -22,6 +40,7 @@ export function PromptPreview() {
   const missing = getMissingEssentials(state.componentState)
   const wordCount = countWords(prompt)
   const charCount = prompt.length
+  const previewRows = getPreviewRows(state.componentState)
 
   async function copyToClipboard() {
     try {
@@ -59,26 +78,25 @@ export function PromptPreview() {
 
   return (
     <section className="prompt-preview" aria-labelledby="prompt-preview-title">
-      <div className="prompt-preview__header">
-        <h2 id="prompt-preview-title">Tu prompt</h2>
-        <span className="prompt-preview__progress">
-          {completed} de {essentialComponentDefs.length} esenciales completos
+      <div className="gradient-bar gradient-bar--full">
+        <h2 id="prompt-preview-title" className="gradient-bar__title">
+          Prompt listo
+        </h2>
+        <span className="gradient-bar__badge">
+          {completed} de {essentialComponentDefs.length} esenciales completados
         </span>
       </div>
 
       <div className="prompt-preview__box">
-        {prompt ? (
-          <pre className="prompt-preview__text">{prompt}</pre>
-        ) : (
-          <p className="prompt-preview__empty">
-            A medida que completes los componentes de la izquierda, tu prompt va a ir
-            apareciendo acá.
+        {previewRows.map((row) => (
+          <p key={row.key} className="prompt-preview__row">
+            <strong>{row.label}:</strong> {row.content || '(no especificado)'}
           </p>
-        )}
+        ))}
       </div>
 
       <p className="prompt-preview__count">
-        {wordCount} palabras · {charCount} caracteres
+        {wordCount} palabras • {charCount} caracteres
       </p>
 
       {copyStatus === 'confirm-missing' && (
@@ -137,6 +155,7 @@ export function PromptPreview() {
           <RotateCcw size={16} aria-hidden="true" /> Reiniciar todo
         </button>
       </div>
+
 
       {confirmingReset && (
         <div className="prompt-preview__warning" role="alert">

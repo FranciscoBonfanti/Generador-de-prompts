@@ -1,26 +1,14 @@
 .essentials-section {
-  margin-bottom: var(--space-xl);
-}
-
-.essentials-section__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
-}
-
-.essentials-section__badge {
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  color: var(--color-essential-badge);
-  background-color: var(--color-surface-alt);
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: 999px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
 }
 
 .essentials-section__hint {
-  margin: var(--space-xs) 0 var(--space-md);
+  margin: var(--space-md) 0 var(--space-md);
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
 }
@@ -31,8 +19,14 @@
   gap: var(--space-md);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 640px) {
   .essentials-section__grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .essentials-section__grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }

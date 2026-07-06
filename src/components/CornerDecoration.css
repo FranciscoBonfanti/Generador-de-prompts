@@ -1,0 +1,43 @@
+.corner-decoration {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 90px;
+  pointer-events: none;
+}
+
+.corner-decoration__left,
+.corner-decoration__right {
+  position: absolute;
+  top: 0;
+  height: 90px;
+}
+
+.corner-decoration__left {
+  left: var(--space-lg);
+  width: 100px;
+}
+
+.corner-decoration__right {
+  right: var(--space-lg);
+  width: 130px;
+}
+
+@media (max-width: 640px) {
+  .corner-decoration {
+    height: 56px;
+  }
+
+  .corner-decoration__left,
+  .corner-decoration__right {
+    height: 56px;
+  }
+
+  .corner-decoration__left {
+    width: 62px;
+  }
+
+  .corner-decoration__right {
+    width: 80px;
+  }
+}

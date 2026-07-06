@@ -10,10 +10,12 @@ export function EssentialsSection() {
 
   return (
     <section className="essentials-section" aria-labelledby="essentials-section-title">
-      <div className="essentials-section__header">
-        <h2 id="essentials-section-title">Esenciales</h2>
-        <span className="essentials-section__badge">
-          {completed} de {essentialComponentDefs.length} esenciales completos
+      <div className="gradient-bar gradient-bar--full">
+        <h2 id="essentials-section-title" className="gradient-bar__title">
+          Componentes esenciales
+        </h2>
+        <span className="gradient-bar__badge">
+          {completed} de {essentialComponentDefs.length} esenciales completados
         </span>
       </div>
       <p className="essentials-section__hint">

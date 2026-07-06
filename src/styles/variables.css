@@ -1,32 +1,48 @@
 /*
-  Paleta institucional neutra por ahora. Cambiar acá (no en los componentes)
-  cuando haya logo/colores de marca definidos.
+  Sistema visual degradado naranja→violeta→azul (Version1.png).
+  El degradado (--gradient-brand) es fijo en ambos temas: no cambiar acá
+  con dark mode, solo las superficies/textos de alrededor.
 */
 :root {
-  --color-bg: #f5f6f8;
+  --color-bg: #f7f7f9;
   --color-surface: #ffffff;
-  --color-surface-alt: #eef0f4;
-  --color-border: #d8dce3;
+  --color-surface-alt: #f2f2f5;
+  --color-border: #e2e2e7;
   --color-text: #1b1f27;
-  --color-text-muted: #5a6270;
+  --color-text-muted: #5f6570;
   --color-primary: #2952cc;
   --color-primary-hover: #1f3fa3;
   --color-primary-contrast: #ffffff;
   --color-accent: #0f9d78;
-  --color-danger: #c0392b;
+  --color-danger: #d1372a;
   --color-warning: #b7791f;
   --color-warning-bg: #fdf3e0;
 
   --color-essential-badge: #2952cc;
   --color-complement-badge: #5a6270;
 
-  --font-family-base:
-    'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  --gradient-brand: linear-gradient(
+    90deg,
+    #ff6b00 0%,
+    #ff5a4d 20%,
+    #d61c7f 45%,
+    #7a35c8 70%,
+    #3c3ae5 90%,
+    #3c3ae5 100%
+  );
+  --gradient-orange: #ff6b00;
+  --gradient-coral: #ff5a4d;
+  --gradient-magenta: #d61c7f;
+  --gradient-violet: #7a35c8;
+  --gradient-blue: #3c3ae5;
+
+  --font-family-base: 'Inter', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
   --font-size-md: 1.125rem;
   --font-size-lg: 1.375rem;
   --font-size-xl: 1.75rem;
+  --font-size-bar: 1.75rem;
 
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
@@ -37,11 +53,14 @@
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
+  --radius-card: 14px;
+  --radius-bar: 18px;
+  --radius-pill: 999px;
 
-  --shadow-card: 0 1px 3px rgba(20, 24, 33, 0.08), 0 1px 2px rgba(20, 24, 33, 0.06);
+  --shadow-card: 0 1px 3px rgba(20, 24, 33, 0.06), 0 1px 2px rgba(20, 24, 33, 0.04);
   --shadow-modal: 0 12px 32px rgba(20, 24, 33, 0.25);
 
-  --transition-base: 150ms ease;
+  --transition-base: 180ms ease;
 }
 
 [data-theme='dark'] {

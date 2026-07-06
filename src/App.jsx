@@ -6,6 +6,7 @@ import { ComplementsSection } from './components/ComplementsSection.jsx'
 import { PromptPreview } from './components/PromptPreview.jsx'
 import { ThemeToggle } from './components/ThemeToggle.jsx'
 import { OnboardingTour } from './components/OnboardingTour.jsx'
+import { CornerDecoration } from './components/CornerDecoration.jsx'
 import './App.css'
 
 function AppShell() {
@@ -19,16 +20,13 @@ function AppShell() {
     <>
       <OnboardingTour />
       <header className="app-header">
-        <div>
-          <h1>Constructor de Prompts</h1>
-          <p className="app-header__subtitle">
-            Armá prompts efectivos para tu IA favorita completando estos pasos guiados.
-          </p>
-        </div>
-        <ThemeToggle />
+        <CornerDecoration />
       </header>
 
       <main className="app-main">
+        <div className="app-toolbar">
+          <ThemeToggle />
+        </div>
         <TaskTypeSelector />
 
         <div className="app-columns">

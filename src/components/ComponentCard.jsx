@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CircleHelp, Sparkles } from 'lucide-react'
+import { CircleHelp } from 'lucide-react'
 import { usePromptContext } from '../context/PromptContext.jsx'
 import { getSuggestionsFor } from '../data/suggestions.js'
 import { resolveIcon } from '../utils/icons.js'
@@ -38,7 +38,7 @@ export function ComponentCard({ componentDef }) {
             checked={entry.active}
             onChange={() => toggleComponentActive(componentDef.id)}
           />
-          <span>{entry.active ? 'Incluir en el prompt' : 'Ocultar'}</span>
+          <span>Incluir en el prompt</span>
         </label>
       </header>
 
@@ -78,7 +78,6 @@ export function ComponentCard({ componentDef }) {
           onClick={() => setShowSuggestions((prev) => !prev)}
           aria-expanded={showSuggestions}
         >
-          <Sparkles size={16} aria-hidden="true" />
           Sugerirme opciones
         </button>
 
@@ -102,3 +101,4 @@ export function ComponentCard({ componentDef }) {
     </article>
   )
 }
+
