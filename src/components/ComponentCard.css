@@ -1,4 +1,7 @@
 .component-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
@@ -21,13 +24,14 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-sm);
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .component-card__title-group {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
+  min-width: 0;
 }
 
 .component-card__icon {
@@ -38,12 +42,14 @@
 .component-card__title {
   font-size: var(--font-size-md);
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .component-card__toggle {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
+  flex-shrink: 0;
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
   cursor: pointer;
@@ -116,6 +122,8 @@
 .component-card__textarea {
   display: block;
   width: 100%;
+  flex: 1 1 auto;
+  min-height: 130px;
   margin-top: var(--space-sm);
   padding: var(--space-sm);
   border: 1px solid var(--color-border);

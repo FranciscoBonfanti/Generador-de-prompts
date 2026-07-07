@@ -28,16 +28,9 @@ function AppShell() {
           <ThemeToggle />
         </div>
         <TaskTypeSelector />
-
-        <div className="app-columns">
-          <div className="app-columns__components">
-            <EssentialsSection />
-            <ComplementsSection />
-          </div>
-          <div className="app-columns__preview">
-            <PromptPreview />
-          </div>
-        </div>
+        <EssentialsSection />
+        <PromptPreview />
+        <ComplementsSection />
       </main>
     </>
   )

@@ -7,27 +7,9 @@ import {
   getMissingEssentials,
   countWords,
 } from '../utils/promptFormatter.js'
-import { essentialComponentDefs, complementComponentDefs } from '../data/componentDefs.js'
+import { essentialComponentDefs } from '../data/componentDefs.js'
 import { ExampleModal } from './ExampleModal.jsx'
 import './PromptPreview.css'
-
-function getPreviewRows(componentState) {
-  const rows = essentialComponentDefs.map((componentDef) => ({
-    key: componentDef.id,
-    label: componentDef.promptLabel,
-    content: componentState[componentDef.id]?.content.trim() || '',
-  }))
-
-  for (const componentDef of complementComponentDefs) {
-    const entry = componentState[componentDef.id]
-    const content = entry?.content.trim() || ''
-    if (entry?.active && content) {
-      rows.push({ key: componentDef.id, label: componentDef.promptLabel, content })
-    }
-  }
-
-  return rows
-}
 
 export function PromptPreview() {
   const { state, resetAll } = usePromptContext()
@@ -40,7 +22,6 @@ export function PromptPreview() {
   const missing = getMissingEssentials(state.componentState)
   const wordCount = countWords(prompt)
   const charCount = prompt.length
-  const previewRows = getPreviewRows(state.componentState)
 
   async function copyToClipboard() {
     try {
@@ -87,73 +68,75 @@ export function PromptPreview() {
         </span>
       </div>
 
-      <div className="prompt-preview__box">
-        {previewRows.map((row) => (
-          <p key={row.key} className="prompt-preview__row">
-            <strong>{row.label}:</strong> {row.content || '(no especificado)'}
-          </p>
-        ))}
-      </div>
-
-      <p className="prompt-preview__count">
-        {wordCount} palabras • {charCount} caracteres
-      </p>
-
-      {copyStatus === 'confirm-missing' && (
-        <div className="prompt-preview__warning" role="alert">
-          <AlertTriangle size={18} aria-hidden="true" />
-          <div>
-            <p>
-              Che, todavía no completaste: {missing.map((m) => m.title).join(', ')}. ¿Seguro
-              querés copiar así?
+      <div className="prompt-preview__body">
+        <div className="prompt-preview__main">
+          <div className="prompt-preview__box">
+            <p className="prompt-preview__text">
+              {prompt || 'Completá los componentes esenciales para ver acá el prompt armado.'}
             </p>
-            <div className="prompt-preview__warning-actions">
-              <button type="button" onClick={copyToClipboard}>
-                Copiar igual
-              </button>
-              <button type="button" onClick={() => setCopyStatus('idle')}>
-                Seguir completando
-              </button>
-            </div>
           </div>
-        </div>
-      )}
 
-      {copyStatus === 'error' && (
-        <p className="prompt-preview__error" role="alert">
-          No pudimos copiar automáticamente. Seleccioná el texto de arriba y copialo a mano
-          (Ctrl+C).
-        </p>
-      )}
+          <p className="prompt-preview__count">
+            {wordCount} palabras • {charCount} caracteres
+          </p>
 
-      <div className="prompt-preview__actions">
-        <button type="button" className="prompt-preview__button prompt-preview__button--primary" onClick={handleCopyClick}>
-          {copyStatus === 'copied' ? (
-            <>
-              <Check size={16} aria-hidden="true" /> ¡Copiado!
-            </>
-          ) : (
-            <>
-              <Copy size={16} aria-hidden="true" /> Copiar al portapapeles
-            </>
+          {copyStatus === 'confirm-missing' && (
+            <div className="prompt-preview__warning" role="alert">
+              <AlertTriangle size={18} aria-hidden="true" />
+              <div>
+                <p>
+                  Che, todavía no completaste: {missing.map((m) => m.title).join(', ')}. ¿Seguro
+                  querés copiar así?
+                </p>
+                <div className="prompt-preview__warning-actions">
+                  <button type="button" onClick={copyToClipboard}>
+                    Copiar igual
+                  </button>
+                  <button type="button" onClick={() => setCopyStatus('idle')}>
+                    Seguir completando
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
-        </button>
 
-        <button type="button" className="prompt-preview__button" onClick={handleDownload}>
-          <Download size={16} aria-hidden="true" /> Descargar como .txt
-        </button>
+          {copyStatus === 'error' && (
+            <p className="prompt-preview__error" role="alert">
+              No pudimos copiar automáticamente. Seleccioná el texto de arriba y copialo a mano
+              (Ctrl+C).
+            </p>
+          )}
+        </div>
 
-        <button type="button" className="prompt-preview__button" onClick={() => setShowExample(true)}>
-          <Eye size={16} aria-hidden="true" /> Ver un ejemplo completo
-        </button>
+        <div className="prompt-preview__actions">
+          <button type="button" className="prompt-preview__button prompt-preview__button--primary" onClick={handleCopyClick}>
+            {copyStatus === 'copied' ? (
+              <>
+                <Check size={16} aria-hidden="true" /> ¡Copiado!
+              </>
+            ) : (
+              <>
+                <Copy size={16} aria-hidden="true" /> Copiar al portapapeles
+              </>
+            )}
+          </button>
 
-        <button
-          type="button"
-          className="prompt-preview__button prompt-preview__button--danger"
-          onClick={() => setConfirmingReset(true)}
-        >
-          <RotateCcw size={16} aria-hidden="true" /> Reiniciar todo
-        </button>
+          <button type="button" className="prompt-preview__button" onClick={handleDownload}>
+            <Download size={16} aria-hidden="true" /> Descargar como .txt
+          </button>
+
+          <button type="button" className="prompt-preview__button" onClick={() => setShowExample(true)}>
+            <Eye size={16} aria-hidden="true" /> Ver un ejemplo completo
+          </button>
+
+          <button
+            type="button"
+            className="prompt-preview__button prompt-preview__button--danger"
+            onClick={() => setConfirmingReset(true)}
+          >
+            <RotateCcw size={16} aria-hidden="true" /> Reiniciar todo
+          </button>
+        </div>
       </div>
 
 

@@ -105,3 +105,17 @@ select:focus-visible,
   border-radius: var(--radius-pill);
   white-space: nowrap;
 }
+
+@media (max-width: 480px) {
+  .gradient-bar {
+    flex-wrap: wrap;
+    height: auto;
+    max-height: none;
+    padding: 0.625rem 1rem;
+  }
+
+  .gradient-bar__title {
+    font-size: 1.375rem;
+    white-space: normal;
+  }
+}

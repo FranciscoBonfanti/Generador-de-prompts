@@ -37,6 +37,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-md);
+  align-items: stretch;
 }
 
 @media (min-width: 900px) {
