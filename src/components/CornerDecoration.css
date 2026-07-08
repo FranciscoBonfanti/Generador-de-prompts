@@ -1,6 +1,6 @@
 .corner-decoration {
   position: relative;
-  max-width: 1200px;
+  max-width: 1800px;
   margin: 0 auto;
   height: 90px;
   pointer-events: none;
@@ -14,12 +14,12 @@
 }
 
 .corner-decoration__left {
-  left: var(--space-lg);
+  left: clamp(1rem, 4vw, 4rem);
   width: 100px;
 }
 
 .corner-decoration__right {
-  right: var(--space-lg);
+  right: clamp(1rem, 4vw, 4rem);
   width: 130px;
 }
 

@@ -4,9 +4,14 @@
  * botón/chip de cada alternativa; `texto` es lo que se carga en el textarea
  * al elegirla (editable después por la persona).
  *
- * Contenido completo para: redaccion-textos, atencion-cliente, analisis-datos.
- * El resto de los tipos de tarea se suma en un paso posterior con el mismo
- * nivel de detalle.
+ * Contenido completo (esenciales + complementarios) para: redaccion-textos,
+ * atencion-cliente, analisis-datos.
+ *
+ * Contenido de esenciales (accion, rol, contexto, formato-salida, tono) para:
+ * generacion-codigo, resumen-documentos, traduccion-textos,
+ * brainstorming-ideas, revision-correccion. Sus complementarios (ejemplos,
+ * restricciones, frases-obligatorias, razonamiento) quedan para un paso
+ * posterior con el mismo nivel de detalle.
  */
 export const suggestions = {
   'redaccion-textos': {
@@ -448,6 +453,407 @@ export const suggestions = {
         etiqueta: 'Alternativas de interpretación',
         texto:
           'Mencioná si hay alguna otra forma de interpretar los mismos datos y por qué elegiste la interpretación que estás presentando.',
+      },
+    ],
+  },
+  'generacion-codigo': {
+    accion: [
+      {
+        etiqueta: 'Escribir una función',
+        texto:
+          'Escribí una función en [lenguaje] que reciba [parámetros] y devuelva [resultado esperado].',
+      },
+      {
+        etiqueta: 'Corregir un bug',
+        texto:
+          'Revisá este código y encontrá por qué [describir el error o comportamiento inesperado], corregilo y explicá qué cambiaste.',
+      },
+      {
+        etiqueta: 'Explicar código existente',
+        texto:
+          'Explicame paso a paso qué hace este código, como si se lo tuvieras que enseñar a alguien que recién empieza a programar.',
+      },
+    ],
+    rol: [
+      {
+        etiqueta: 'Desarrollador senior',
+        texto:
+          'Actuá como un desarrollador senior en [lenguaje/framework], que escribe código limpio, comentado solo donde hace falta y sigue buenas prácticas.',
+      },
+      {
+        etiqueta: 'Revisor de código',
+        texto:
+          'Actuá como un revisor de código (code reviewer) exigente, que señala errores, riesgos de seguridad y oportunidades de simplificación.',
+      },
+      {
+        etiqueta: 'Profesor de programación',
+        texto:
+          'Actuá como un profesor de programación que explica con paciencia, usando ejemplos simples antes de ir a los detalles técnicos.',
+      },
+    ],
+    contexto: [
+      {
+        etiqueta: 'Stack del proyecto',
+        texto:
+          'Este código forma parte de un proyecto hecho en [lenguaje/framework/versión], que sigue la convención [ej: nombres en inglés, arquitectura por capas].',
+      },
+      {
+        etiqueta: 'Nivel de experiencia',
+        texto:
+          'Quien va a usar esto tiene un nivel [principiante/intermedio/avanzado] en programación, así que ajustá la explicación a ese nivel.',
+      },
+      {
+        etiqueta: 'Restricciones técnicas',
+        texto:
+          'El código tiene que funcionar en [entorno, ej: Node 18, navegador sin librerías externas, versión anterior de Python].',
+      },
+    ],
+    'formato-salida': [
+      {
+        etiqueta: 'Solo el código',
+        texto: 'Como bloque de código, sin explicación adicional salvo que se pida.',
+      },
+      {
+        etiqueta: 'Código + explicación',
+        texto: 'Como bloque de código seguido de una explicación breve de la lógica, en viñetas.',
+      },
+      {
+        etiqueta: 'Diff o cambios puntuales',
+        texto:
+          'Mostrando solo las líneas que cambian, indicando claramente qué se agregó y qué se sacó.',
+      },
+    ],
+    tono: [
+      {
+        etiqueta: 'Técnico y directo',
+        texto: 'Tono técnico y directo, sin explicaciones de más para quien ya sabe programar.',
+      },
+      {
+        etiqueta: 'Didáctico',
+        texto:
+          'Tono didáctico, explicando el porqué de cada decisión como para alguien que está aprendiendo.',
+      },
+      {
+        etiqueta: 'Conciso',
+        texto: 'Tono conciso, priorizando la claridad del código por sobre comentarios largos.',
+      },
+    ],
+  },
+
+  'resumen-documentos': {
+    accion: [
+      {
+        etiqueta: 'Resumir un documento',
+        texto: 'Resumí este documento en sus puntos más importantes, sin perder la información clave.',
+      },
+      {
+        etiqueta: 'Extraer conclusiones',
+        texto: 'Sacá las conclusiones principales de este texto y decime qué acción se desprende de cada una.',
+      },
+      {
+        etiqueta: 'Simplificar un texto técnico',
+        texto: 'Explicá este documento en términos simples, como para alguien que no conoce el tema.',
+      },
+    ],
+    rol: [
+      {
+        etiqueta: 'Analista de contenido',
+        texto:
+          'Actuá como un analista que sabe separar lo importante de lo accesorio en documentos largos.',
+      },
+      {
+        etiqueta: 'Editor de resúmenes ejecutivos',
+        texto:
+          'Actuá como un editor que arma resúmenes ejecutivos claros para gente que no tiene tiempo de leer el documento completo.',
+      },
+      {
+        etiqueta: 'Asistente de estudio',
+        texto:
+          'Actuá como un asistente que ayuda a estudiar, resumiendo textos largos en ideas fáciles de recordar.',
+      },
+    ],
+    contexto: [
+      {
+        etiqueta: 'Tipo de documento',
+        texto:
+          'Este documento es [tipo: un informe, un contrato, un paper, un mail largo] de [tantas] páginas/palabras aproximadamente.',
+      },
+      {
+        etiqueta: 'Para quién es el resumen',
+        texto: 'El resumen es para [destinatario], que necesita entender lo esencial sin leer el documento completo.',
+      },
+      {
+        etiqueta: 'Uso que se le va a dar',
+        texto:
+          'Este resumen se va a usar para [ej: tomar una decisión, presentar en una reunión, repasar para un examen].',
+      },
+    ],
+    'formato-salida': [
+      {
+        etiqueta: 'Resumen en párrafo',
+        texto: 'Como un párrafo único de no más de [X] líneas.',
+      },
+      {
+        etiqueta: 'Lista de puntos clave',
+        texto: 'Como una lista de viñetas con los puntos clave, cada uno en una oración.',
+      },
+      {
+        etiqueta: 'Resumen + conclusión',
+        texto: 'Como un resumen breve seguido de una conclusión o recomendación final.',
+      },
+    ],
+    tono: [
+      {
+        etiqueta: 'Neutral y objetivo',
+        texto: 'Tono neutral y objetivo, sin agregar opiniones que no estén en el documento original.',
+      },
+      {
+        etiqueta: 'Claro y simple',
+        texto: 'Tono claro y simple, evitando jerga o tecnicismos innecesarios.',
+      },
+      {
+        etiqueta: 'Ejecutivo',
+        texto: 'Tono ejecutivo, yendo directo a lo que importa para tomar una decisión.',
+      },
+    ],
+  },
+
+  'traduccion-textos': {
+    accion: [
+      {
+        etiqueta: 'Traducir un texto',
+        texto:
+          'Traducí este texto de [idioma origen] a [idioma destino], manteniendo el sentido y el tono original.',
+      },
+      {
+        etiqueta: 'Adaptar (localizar) un texto',
+        texto:
+          'Traducí y adaptá este texto para un público de [país/región], ajustando expresiones que no tengan sentido literal.',
+      },
+      {
+        etiqueta: 'Revisar una traducción existente',
+        texto:
+          'Revisá esta traducción y corregí errores de sentido, gramática o naturalidad en el idioma destino.',
+      },
+    ],
+    rol: [
+      {
+        etiqueta: 'Traductor profesional',
+        texto:
+          'Actuá como un traductor profesional especializado en [tipo de texto: legal, técnico, marketing, literario].',
+      },
+      {
+        etiqueta: 'Editor bilingüe',
+        texto:
+          'Actuá como un editor bilingüe que cuida que la traducción suene natural, no como una traducción literal.',
+      },
+      {
+        etiqueta: 'Especialista en localización',
+        texto:
+          'Actuá como especialista en localización, atento a modismos y diferencias culturales entre idiomas.',
+      },
+    ],
+    contexto: [
+      {
+        etiqueta: 'Público destinatario',
+        texto: 'El texto traducido es para [describir destinatario], que habla [idioma destino] como lengua materna.',
+      },
+      {
+        etiqueta: 'Registro del texto original',
+        texto:
+          'El texto original tiene un registro [formal/informal/técnico], que hay que conservar en la traducción.',
+      },
+      {
+        etiqueta: 'Uso del texto',
+        texto:
+          'Esta traducción se va a usar para [ej: un sitio web, un contrato, un subtitulado], así que tiene que quedar lista para publicar.',
+      },
+    ],
+    'formato-salida': [
+      {
+        etiqueta: 'Solo la traducción',
+        texto: 'Como el texto traducido únicamente, sin notas ni comentarios adicionales.',
+      },
+      {
+        etiqueta: 'Traducción + notas',
+        texto: 'Como el texto traducido, seguido de notas breves sobre decisiones de traducción difíciles.',
+      },
+      {
+        etiqueta: 'Formato espejo del original',
+        texto: 'Respetando la misma estructura de párrafos y títulos que tiene el texto original.',
+      },
+    ],
+    tono: [
+      {
+        etiqueta: 'Fiel al original',
+        texto: 'Tono lo más fiel posible al original, conservando la formalidad o informalidad del texto de partida.',
+      },
+      {
+        etiqueta: 'Natural en el idioma destino',
+        texto:
+          'Tono que suene natural para un hablante nativo del idioma destino, aunque haya que alejarse un poco de la traducción literal.',
+      },
+      {
+        etiqueta: 'Técnico y preciso',
+        texto: 'Tono técnico y preciso, priorizando la exactitud terminológica por sobre el estilo.',
+      },
+    ],
+  },
+
+  'brainstorming-ideas': {
+    accion: [
+      {
+        etiqueta: 'Generar ideas',
+        texto: 'Generame [cantidad] ideas para [problema/campaña/proyecto], lo más variadas posible.',
+      },
+      {
+        etiqueta: 'Proponer nombres o conceptos',
+        texto:
+          'Proponeme opciones de nombre/concepto para [producto/proyecto/campaña], con una breve explicación de cada una.',
+      },
+      {
+        etiqueta: 'Desbloquear un problema',
+        texto:
+          'Ayudame a pensar distintos enfoques para resolver [problema concreto], incluso ideas poco convencionales.',
+      },
+    ],
+    rol: [
+      {
+        etiqueta: 'Facilitador de brainstorming',
+        texto:
+          'Actuá como un facilitador de brainstorming, que propone ideas sin autocensurarse y las organiza después por potencial.',
+      },
+      {
+        etiqueta: 'Estratega creativo',
+        texto:
+          'Actuá como un estratega creativo de agencia de publicidad, acostumbrado a pensar conceptos originales bajo presión de tiempo.',
+      },
+      {
+        etiqueta: 'Compañero de equipo',
+        texto:
+          'Actuá como un compañero de equipo que piensa en voz alta, tirando ideas para después filtrarlas juntos.',
+      },
+    ],
+    contexto: [
+      {
+        etiqueta: 'Problema u objetivo',
+        texto:
+          'El objetivo es [describir problema u objetivo concreto], y hasta ahora se probó [qué se intentó, si aplica].',
+      },
+      {
+        etiqueta: 'Restricciones del proyecto',
+        texto: 'Las ideas tienen que poder ejecutarse con [presupuesto/tiempo/recursos disponibles].',
+      },
+      {
+        etiqueta: 'Público o audiencia',
+        texto:
+          'Esto está pensado para [describir audiencia], así que las ideas tienen que resonarle a ese público en particular.',
+      },
+    ],
+    'formato-salida': [
+      {
+        etiqueta: 'Lista numerada de ideas',
+        texto: 'Como una lista numerada, cada idea en una o dos líneas.',
+      },
+      {
+        etiqueta: 'Ideas agrupadas por enfoque',
+        texto: 'Agrupando las ideas por tipo de enfoque (ej: bajo costo, alto impacto, innovador).',
+      },
+      {
+        etiqueta: 'Idea + justificación breve',
+        texto: 'Cada idea seguida de una justificación breve de por qué podría funcionar.',
+      },
+    ],
+    tono: [
+      {
+        etiqueta: 'Creativo y sin filtro',
+        texto:
+          'Tono creativo y sin filtro, priorizando la cantidad y variedad de ideas por sobre lo prolijo de la redacción.',
+      },
+      {
+        etiqueta: 'Entusiasta',
+        texto: 'Tono entusiasta, que transmita ganas de probar cosas nuevas.',
+      },
+      {
+        etiqueta: 'Pragmático',
+        texto: 'Tono pragmático, enfocado en ideas que se puedan llevar a la práctica pronto.',
+      },
+    ],
+  },
+
+  'revision-correccion': {
+    accion: [
+      {
+        etiqueta: 'Corregir errores',
+        texto: 'Corregí los errores de ortografía, gramática y puntuación de este texto, sin cambiar el sentido.',
+      },
+      {
+        etiqueta: 'Mejorar la redacción',
+        texto:
+          'Mejorá la redacción de este texto para que se lea más claro y fluido, conservando la idea original.',
+      },
+      {
+        etiqueta: 'Adaptar el estilo',
+        texto: 'Reescribí este texto para que tenga un estilo más [formal/informal/conciso], sin perder el contenido.',
+      },
+    ],
+    rol: [
+      {
+        etiqueta: 'Corrector de estilo',
+        texto: 'Actuá como un corrector de estilo profesional, que revisa gramática, claridad y consistencia.',
+      },
+      {
+        etiqueta: 'Editor exigente',
+        texto: 'Actuá como un editor exigente, que señala frases confusas o redundantes y las mejora.',
+      },
+      {
+        etiqueta: 'Profesor de escritura',
+        texto:
+          'Actuá como un profesor de escritura, que corrige y además explica brevemente por qué hizo cada cambio.',
+      },
+    ],
+    contexto: [
+      {
+        etiqueta: 'Tipo de texto',
+        texto: 'Este texto es [tipo: un mail, un ensayo, una publicación], escrito por alguien que no es especialista en redacción.',
+      },
+      {
+        etiqueta: 'Nivel de cambios permitido',
+        texto:
+          'Se pueden hacer cambios de redacción, pero no modificar el sentido ni el orden de las ideas principales.',
+      },
+      {
+        etiqueta: 'Público del texto final',
+        texto:
+          'El texto final va a ser leído por [describir destinatario], así que el nivel de formalidad tiene que ser acorde.',
+      },
+    ],
+    'formato-salida': [
+      {
+        etiqueta: 'Texto corregido completo',
+        texto: 'Como el texto completo ya corregido, listo para usar.',
+      },
+      {
+        etiqueta: 'Texto + lista de cambios',
+        texto: 'Como el texto corregido, seguido de una lista breve de los cambios más importantes que se hicieron.',
+      },
+      {
+        etiqueta: 'Solo señalar errores',
+        texto: 'Señalando los errores encontrados (sin reescribir), para que la persona los corrija ella misma.',
+      },
+    ],
+    tono: [
+      {
+        etiqueta: 'Constructivo',
+        texto: 'Tono constructivo, señalando los errores sin sonar duro ni desalentador.',
+      },
+      {
+        etiqueta: 'Neutral y profesional',
+        texto: 'Tono neutral y profesional, enfocado solo en la calidad del texto.',
+      },
+      {
+        etiqueta: 'Claro y directo',
+        texto: 'Tono claro y directo sobre qué cambiar y por qué, sin vueltas.',
       },
     ],
   },

@@ -2,6 +2,11 @@
   padding-top: var(--space-sm);
 }
 
+.app-footer {
+  padding-top: var(--space-md);
+  padding-bottom: var(--space-lg);
+}
+
 .app-toolbar {
   display: flex;
   justify-content: flex-end;

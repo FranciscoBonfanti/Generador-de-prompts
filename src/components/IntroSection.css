@@ -1,0 +1,40 @@
+.intro-section {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-card);
+  margin-bottom: var(--space-lg);
+}
+
+.intro-section__title {
+  margin: 0 0 var(--space-md);
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 2.25rem;
+  color: var(--color-text);
+}
+
+.intro-section__description {
+  margin: 0;
+  max-width: 95%;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
+@media (max-width: 640px) {
+  .intro-section__title {
+    font-size: 1.5rem;
+  }
+
+  .intro-section__description {
+    font-size: 0.9375rem;
+    text-align: left;
+    text-justify: auto;
+    hyphens: none;
+  }
+}

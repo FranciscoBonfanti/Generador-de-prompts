@@ -71,12 +71,12 @@ select:focus-visible,
 /* Barra de título con degradado de marca — usada en headers de sección */
 .gradient-bar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-sm);
   width: fit-content;
   min-height: 44px;
-  max-height: 52px;
   padding: 0.5rem 1.25rem;
   border-radius: var(--radius-bar);
   background: var(--gradient-brand);
@@ -108,9 +108,6 @@ select:focus-visible,
 
 @media (max-width: 480px) {
   .gradient-bar {
-    flex-wrap: wrap;
-    height: auto;
-    max-height: none;
     padding: 0.625rem 1rem;
   }
 

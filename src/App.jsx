@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { PromptProvider, usePromptContext } from './context/PromptContext.jsx'
+import { IntroSection } from './components/IntroSection.jsx'
 import { TaskTypeSelector } from './components/TaskTypeSelector.jsx'
 import { EssentialsSection } from './components/EssentialsSection.jsx'
 import { ComplementsSection } from './components/ComplementsSection.jsx'
@@ -27,11 +28,16 @@ function AppShell() {
         <div className="app-toolbar">
           <ThemeToggle />
         </div>
+        <IntroSection />
         <TaskTypeSelector />
-        <EssentialsSection />
         <PromptPreview />
+        <EssentialsSection />
         <ComplementsSection />
       </main>
+
+      <footer className="app-footer">
+        <CornerDecoration />
+      </footer>
     </>
   )
 }
