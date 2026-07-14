@@ -10,7 +10,7 @@ export function TaskTypeSelector() {
       <label
         id="task-type-selector-label"
         htmlFor="task-type-select"
-        className="task-type-selector__label gradient-bar"
+        className="task-type-selector__label gradient-bar gradient-bar__title"
       >
         Tipo de tarea
       </label>

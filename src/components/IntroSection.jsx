@@ -1,11 +1,14 @@
+import { CornerDecoration } from './CornerDecoration.jsx'
 import './IntroSection.css'
 
 export function IntroSection() {
   return (
     <section className="intro-section" aria-labelledby="intro-section-title">
-      <h1 id="intro-section-title" className="intro-section__title">
-        Construí tu propio Prompt
-      </h1>
+      <CornerDecoration>
+        <h1 id="intro-section-title" className="intro-section__title">
+          Construí tu propio Prompt
+        </h1>
+      </CornerDecoration>
       <p className="intro-section__description">
         Esta herramienta didáctica complementa los contenidos del curso Puente al Futuro: Cómo
         crear prompts efectivos. Fue diseñada para que puedas crear prompts experimentando con

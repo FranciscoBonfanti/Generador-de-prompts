@@ -1,10 +1,7 @@
-.app-header {
-  padding-top: var(--space-sm);
-}
-
 .app-footer {
-  padding-top: var(--space-md);
-  padding-bottom: var(--space-lg);
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: var(--space-md) clamp(1rem, 4vw, 4rem) var(--space-lg);
 }
 
 .app-toolbar {

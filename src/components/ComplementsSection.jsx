@@ -11,11 +11,13 @@ export function ComplementsSection() {
     <section className="complements-section" aria-labelledby="complements-section-title">
       <button
         type="button"
-        className="complements-section__toggle"
+        className="complements-section__toggle gradient-bar"
         onClick={() => setExpanded((prev) => !prev)}
         aria-expanded={expanded}
       >
-        <span id="complements-section-title">Agregar más precisión (opcional)</span>
+        <span id="complements-section-title" className="gradient-bar__title">
+          Agregar más precisión (opcional)
+        </span>
         {expanded ? <ChevronUp size={18} aria-hidden="true" /> : <ChevronDown size={18} aria-hidden="true" />}
       </button>
 

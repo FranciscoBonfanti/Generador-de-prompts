@@ -8,17 +8,13 @@
 }
 
 .task-type-selector__label {
-  width: fit-content;
   margin-bottom: var(--space-md);
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 1.75rem;
-  color: #ffffff;
   cursor: pointer;
 }
 
 .task-type-selector__select {
   width: 100%;
+  margin-top: var(--space-md);
   padding: var(--space-sm) var(--space-md);
   font-size: var(--font-size-md);
   border: 1px solid var(--color-border);

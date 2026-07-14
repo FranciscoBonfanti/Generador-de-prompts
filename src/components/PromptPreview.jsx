@@ -59,7 +59,7 @@ export function PromptPreview() {
 
   return (
     <section className="prompt-preview" aria-labelledby="prompt-preview-title">
-      <div className="gradient-bar gradient-bar--full">
+      <div className="gradient-bar">
         <h2 id="prompt-preview-title" className="gradient-bar__title">
           Prompt listo
         </h2>

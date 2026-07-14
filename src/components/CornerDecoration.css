@@ -1,31 +1,33 @@
+/* Fila flex simple: se estira al 100% del contenedor que la use (la
+   alineación con el resto de las cards la aporta ese contenedor, no esta
+   clase, para poder anidarla dentro de app-main o del footer por igual). */
 .corner-decoration {
-  position: relative;
-  max-width: 1800px;
-  margin: 0 auto;
-  height: 90px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  min-height: 90px;
   pointer-events: none;
 }
 
 .corner-decoration__left,
 .corner-decoration__right {
-  position: absolute;
-  top: 0;
+  flex-shrink: 0;
   height: 90px;
 }
 
 .corner-decoration__left {
-  left: clamp(1rem, 4vw, 4rem);
   width: 100px;
 }
 
 .corner-decoration__right {
-  right: clamp(1rem, 4vw, 4rem);
   width: 130px;
 }
 
 @media (max-width: 640px) {
   .corner-decoration {
-    height: 56px;
+    min-height: 56px;
   }
 
   .corner-decoration__left,

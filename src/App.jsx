@@ -20,9 +20,6 @@ function AppShell() {
   return (
     <>
       <OnboardingTour />
-      <header className="app-header">
-        <CornerDecoration />
-      </header>
 
       <main className="app-main">
         <div className="app-toolbar">

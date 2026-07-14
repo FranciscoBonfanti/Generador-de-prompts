@@ -10,7 +10,7 @@ export function EssentialsSection() {
 
   return (
     <section className="essentials-section" aria-labelledby="essentials-section-title">
-      <div className="gradient-bar gradient-bar--full">
+      <div className="gradient-bar">
         <h2 id="essentials-section-title" className="gradient-bar__title">
           Componentes esenciales
         </h2>

@@ -68,7 +68,9 @@ select:focus-visible,
   border: 0;
 }
 
-/* Barra de título con degradado de marca — usada en headers de sección */
+/* Barra de título con degradado de marca — usada en headers de sección.
+   Ajustada al contenido (fit-content): el fondo degradado "abraza" el
+   texto en vez de estirarse como una franja ancha con espacio vacío. */
 .gradient-bar {
   display: flex;
   flex-wrap: wrap;
@@ -76,14 +78,10 @@ select:focus-visible,
   justify-content: space-between;
   gap: var(--space-sm);
   width: fit-content;
-  min-height: 44px;
-  padding: 0.5rem 1.25rem;
+  max-width: 100%;
+  padding: var(--space-xs) var(--space-md);
   border-radius: var(--radius-bar);
   background: var(--gradient-brand);
-}
-
-.gradient-bar--full {
-  width: 100%;
 }
 
 .gradient-bar__title {
@@ -91,6 +89,7 @@ select:focus-visible,
   font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 1.875rem;
+  line-height: 1.25;
   color: #ffffff;
   white-space: nowrap;
 }
@@ -108,7 +107,7 @@ select:focus-visible,
 
 @media (max-width: 480px) {
   .gradient-bar {
-    padding: 0.625rem 1rem;
+    padding: var(--space-xs) var(--space-sm);
   }
 
   .gradient-bar__title {

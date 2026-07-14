@@ -40,13 +40,24 @@ function Squares({ squares }) {
   )
 }
 
-export function CornerDecoration() {
+export function CornerDecoration({ children }) {
   return (
-    <div className="corner-decoration" aria-hidden="true">
-      <svg className="corner-decoration__left" viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+    <div className="corner-decoration">
+      <svg
+        className="corner-decoration__left"
+        viewBox="0 0 100 90"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
         <Squares squares={LEFT_SQUARES} />
       </svg>
-      <svg className="corner-decoration__right" viewBox="0 0 130 90" xmlns="http://www.w3.org/2000/svg">
+      {children}
+      <svg
+        className="corner-decoration__right"
+        viewBox="0 0 130 90"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
         <Squares squares={RIGHT_SQUARES} />
       </svg>
     </div>
