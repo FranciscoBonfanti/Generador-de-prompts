@@ -7,11 +7,11 @@
  * Contenido completo (esenciales + complementarios) para: redaccion-textos,
  * atencion-cliente, analisis-datos.
  *
- * Contenido de esenciales (accion, rol, contexto, formato-salida, tono) para:
- * generacion-codigo, resumen-documentos, traduccion-textos,
- * brainstorming-ideas, revision-correccion. Sus complementarios (ejemplos,
- * restricciones, frases-obligatorias, razonamiento) quedan para un paso
- * posterior con el mismo nivel de detalle.
+ * Contenido de esenciales (accion, rol, contexto, formato-salida,
+ * restricciones) + tono para: generacion-codigo, resumen-documentos,
+ * traduccion-textos, brainstorming-ideas, revision-correccion. Sus otros
+ * complementarios (ejemplos, frases-obligatorias, razonamiento) quedan para
+ * un paso posterior con el mismo nivel de detalle.
  */
 export const suggestions = {
   'redaccion-textos': {
@@ -538,6 +538,21 @@ export const suggestions = {
         texto: 'Tono conciso, priorizando la claridad del código por sobre comentarios largos.',
       },
     ],
+    restricciones: [
+      {
+        etiqueta: 'Sin librerías externas',
+        texto: 'No usar librerías externas, solo lo que viene en la instalación estándar de [lenguaje].',
+      },
+      {
+        etiqueta: 'Compatibilidad de versión',
+        texto:
+          'El código tiene que ser compatible con [versión específica], sin usar funciones más nuevas que no estén soportadas.',
+      },
+      {
+        etiqueta: 'Sin reescribir todo',
+        texto: 'No reescribir funciones que no estén relacionadas con el problema, modificar solo lo necesario.',
+      },
+    ],
   },
 
   'resumen-documentos': {
@@ -614,6 +629,21 @@ export const suggestions = {
       {
         etiqueta: 'Ejecutivo',
         texto: 'Tono ejecutivo, yendo directo a lo que importa para tomar una decisión.',
+      },
+    ],
+    restricciones: [
+      {
+        etiqueta: 'Extensión máxima',
+        texto: 'No superar las [X] palabras o líneas en el resumen.',
+      },
+      {
+        etiqueta: 'No agregar interpretación propia',
+        texto: 'No agregar opiniones ni conclusiones que no estén explícitas en el documento original.',
+      },
+      {
+        etiqueta: 'Mantener términos clave',
+        texto:
+          'No traducir ni simplificar términos técnicos específicos que deban mantenerse tal cual.',
       },
     ],
   },
@@ -698,6 +728,20 @@ export const suggestions = {
         texto: 'Tono técnico y preciso, priorizando la exactitud terminológica por sobre el estilo.',
       },
     ],
+    restricciones: [
+      {
+        etiqueta: 'No traducir nombres propios',
+        texto: 'No traducir nombres propios, marcas ni términos técnicos que deban quedar igual.',
+      },
+      {
+        etiqueta: 'Extensión similar al original',
+        texto: 'La traducción no debería quedar mucho más larga o más corta que el texto original.',
+      },
+      {
+        etiqueta: 'Registro a mantener',
+        texto: 'No cambiar el registro formal o informal del texto original al traducir.',
+      },
+    ],
   },
 
   'brainstorming-ideas': {
@@ -779,6 +823,20 @@ export const suggestions = {
         texto: 'Tono pragmático, enfocado en ideas que se puedan llevar a la práctica pronto.',
       },
     ],
+    restricciones: [
+      {
+        etiqueta: 'Presupuesto o recursos',
+        texto: 'Las ideas no pueden requerir un presupuesto mayor a [monto o recursos disponibles].',
+      },
+      {
+        etiqueta: 'Temas a evitar',
+        texto: 'No proponer ideas relacionadas con [tema a evitar], ya se descartó por [motivo].',
+      },
+      {
+        etiqueta: 'Cantidad límite',
+        texto: 'No dar más de [X] ideas, priorizando calidad por sobre cantidad.',
+      },
+    ],
   },
 
   'revision-correccion': {
@@ -854,6 +912,20 @@ export const suggestions = {
       {
         etiqueta: 'Claro y directo',
         texto: 'Tono claro y directo sobre qué cambiar y por qué, sin vueltas.',
+      },
+    ],
+    restricciones: [
+      {
+        etiqueta: 'No cambiar el sentido',
+        texto: 'No modificar el significado ni el orden de las ideas principales del texto.',
+      },
+      {
+        etiqueta: 'Extensión similar',
+        texto: 'El texto corregido no debería quedar mucho más largo que el original.',
+      },
+      {
+        etiqueta: 'Mantener frases citadas',
+        texto: 'No corregir frases que estén citadas textualmente entre comillas.',
       },
     ],
   },

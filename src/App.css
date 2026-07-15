@@ -4,6 +4,40 @@
   padding: var(--space-md) clamp(1rem, 4vw, 4rem) var(--space-lg);
 }
 
+.app-footer__text-wrap {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--space-md);
+  pointer-events: auto;
+}
+
+.app-footer__text {
+  margin: 0;
+  max-width: 800px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
+@media (max-width: 640px) {
+  .app-footer__text-wrap {
+    flex-basis: 100%;
+    order: 3;
+    padding: var(--space-sm) 0 0;
+  }
+
+  .app-footer__text {
+    max-width: 100%;
+    text-align: left;
+    text-justify: auto;
+    hyphens: none;
+  }
+}
+
 .app-toolbar {
   display: flex;
   justify-content: flex-end;

@@ -79,17 +79,19 @@ select:focus-visible,
   gap: var(--space-sm);
   width: fit-content;
   max-width: 100%;
-  padding: var(--space-xs) var(--space-md);
-  border-radius: var(--radius-bar);
-  background: var(--gradient-brand);
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: linear-gradient(96deg, #ff7402 0%, #e42153 47%, #3c3ae5 100%);
+  box-shadow: 0 6px 18px rgba(228, 33, 83, 0.22);
 }
 
 .gradient-bar__title {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 1.875rem;
-  line-height: 1.25;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: -0.01em;
   color: #ffffff;
   white-space: nowrap;
 }
@@ -107,11 +109,11 @@ select:focus-visible,
 
 @media (max-width: 480px) {
   .gradient-bar {
-    padding: var(--space-xs) var(--space-sm);
+    padding: 8px 16px;
   }
 
   .gradient-bar__title {
-    font-size: 1.375rem;
+    font-size: 18px;
     white-space: normal;
   }
 }

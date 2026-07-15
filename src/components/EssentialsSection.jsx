@@ -12,7 +12,7 @@ export function EssentialsSection() {
     <section className="essentials-section" aria-labelledby="essentials-section-title">
       <div className="gradient-bar">
         <h2 id="essentials-section-title" className="gradient-bar__title">
-          Componentes esenciales
+          Componentes más usados
         </h2>
         <span className="gradient-bar__badge">
           {completed} de {essentialComponentDefs.length} esenciales completados

@@ -57,14 +57,15 @@ export const componentDefs = [
     example: 'Ejemplo: "Como un mail corto, con saludo inicial y firma al final."',
   },
   {
-    id: 'tono',
+    id: 'restricciones',
     category: componentCategories.essential,
-    title: 'Tono',
-    icon: 'MessageCircleHeart',
-    promptLabel: 'Tono',
+    title: 'Restricciones',
+    icon: 'Ban',
+    promptLabel: 'Restricciones',
     definition:
-      'Con qué actitud tiene que "sonar" la respuesta: formal, informal, empático, técnico, etc.',
-    example: 'Ejemplo: "Tono cordial pero profesional, sin ser demasiado formal."',
+      'Qué NO tiene que hacer o incluir la IA: longitud máxima, temas a evitar, cosas prohibidas.',
+    example:
+      'Ejemplo: "No mencionar plazos de reembolso todavía, no superar las 100 palabras."',
   },
 
   // --- Complementarios ---
@@ -80,15 +81,14 @@ export const componentDefs = [
       'Ejemplo: "Así empezamos siempre los mails a clientes: \'Estimado/a [nombre], nos comunicamos para informarle...\'"',
   },
   {
-    id: 'restricciones',
+    id: 'tono',
     category: componentCategories.complement,
-    title: 'Restricciones',
-    icon: 'Ban',
-    promptLabel: 'Restricciones',
+    title: 'Tono',
+    icon: 'MessageCircleHeart',
+    promptLabel: 'Tono',
     definition:
-      'Qué NO tiene que hacer o incluir la IA: longitud máxima, temas a evitar, cosas prohibidas.',
-    example:
-      'Ejemplo: "No mencionar plazos de reembolso todavía, no superar las 100 palabras."',
+      'Con qué actitud tiene que "sonar" la respuesta: formal, informal, empático, técnico, etc.',
+    example: 'Ejemplo: "Tono cordial pero profesional, sin ser demasiado formal."',
   },
   {
     id: 'frases-obligatorias',

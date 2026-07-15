@@ -33,7 +33,18 @@ function AppShell() {
       </main>
 
       <footer className="app-footer">
-        <CornerDecoration />
+        <CornerDecoration>
+          <div className="app-footer__text-wrap">
+            <p className="app-footer__text">
+              Fue diseñada para que puedas crear prompts experimentando con distintas
+              combinaciones y aplicar los ejemplos y ejercicios propuestos durante la
+              capacitación. Podrás probar y perfeccionar tus prompts todas las veces que
+              necesites a los fines de ir aplicando los diferentes ejemplos. Experimentá con
+              distintas combinaciones, comprendé cómo influye cada componente del prompt y
+              descubrí cómo pequeños cambios pueden generar mejores resultados.
+            </p>
+          </div>
+        </CornerDecoration>
       </footer>
     </>
   )
