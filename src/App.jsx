@@ -27,8 +27,10 @@ function AppShell() {
         </div>
         <IntroSection />
         <TaskTypeSelector />
-        <PromptPreview />
-        <EssentialsSection />
+        <div className="app-columns">
+          <EssentialsSection />
+          <PromptPreview />
+        </div>
         <ComplementsSection />
       </main>
 

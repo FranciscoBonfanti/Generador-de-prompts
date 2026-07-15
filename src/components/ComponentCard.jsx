@@ -38,7 +38,9 @@ export function ComponentCard({ componentDef }) {
             checked={entry.active}
             onChange={() => toggleComponentActive(componentDef.id)}
           />
-          <span>Incluir en el prompt</span>
+          <span>
+            Incluir<span className="sr-only"> en el prompt</span>
+          </span>
         </label>
       </header>
 

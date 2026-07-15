@@ -5,6 +5,7 @@
   box-shadow: var(--shadow-card);
   padding: var(--space-lg);
   margin-bottom: var(--space-xl);
+  container-type: inline-size;
 }
 
 .complements-section__toggle {
@@ -30,8 +31,8 @@
   align-items: stretch;
 }
 
-@media (min-width: 900px) {
+@container (min-width: 620px) {
   .complements-section__grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

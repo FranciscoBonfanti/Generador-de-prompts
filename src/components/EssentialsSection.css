@@ -4,7 +4,7 @@
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
   padding: var(--space-lg);
-  margin-bottom: var(--space-lg);
+  container-type: inline-size;
 }
 
 .essentials-section__hint {
@@ -20,14 +20,24 @@
   align-items: stretch;
 }
 
-@media (min-width: 640px) {
+@container (min-width: 600px) {
   .essentials-section__grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* 5 tarjetas en 2 columnas quedan 2+2+1: que la última ("Restricciones")
+     ocupe la fila entera en vez de quedar sola y descolgada a la mitad. */
+  .essentials-section__grid > .component-card:last-child {
+    grid-column: 1 / -1;
   }
 }
 
-@media (min-width: 1200px) {
+@container (min-width: 900px) {
   .essentials-section__grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .essentials-section__grid > .component-card:last-child {
+    grid-column: auto;
   }
 }

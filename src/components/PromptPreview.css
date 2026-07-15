@@ -4,7 +4,7 @@
   border-radius: var(--radius-card);
   padding: var(--space-lg);
   box-shadow: var(--shadow-card);
-  margin-bottom: var(--space-lg);
+  container-type: inline-size;
 }
 
 .prompt-preview .gradient-bar {
@@ -88,14 +88,14 @@
 
 .prompt-preview__actions {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-sm);
   margin-top: var(--space-md);
 }
 
-@media (min-width: 900px) {
+@container (min-width: 780px) {
   .prompt-preview__actions {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
@@ -140,7 +140,7 @@
   border-color: var(--color-danger);
 }
 
-@media (max-width: 480px) {
+@container (max-width: 480px) {
   .prompt-preview__actions {
     grid-template-columns: 1fr;
   }

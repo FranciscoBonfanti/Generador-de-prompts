@@ -38,6 +38,20 @@
   }
 }
 
+.app-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+@media (max-width: 1499px) {
+  .app-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
 .app-toolbar {
   display: flex;
   justify-content: flex-end;
