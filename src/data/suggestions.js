@@ -4,14 +4,7 @@
  * botón/chip de cada alternativa; `texto` es lo que se carga en el textarea
  * al elegirla (editable después por la persona).
  *
- * Contenido completo (esenciales + complementarios) para: redaccion-textos,
- * atencion-cliente, analisis-datos.
- *
- * Contenido de esenciales (accion, rol, contexto, formato-salida,
- * restricciones) + tono para: generacion-codigo, resumen-documentos,
- * traduccion-textos, brainstorming-ideas, revision-correccion. Sus otros
- * complementarios (ejemplos, frases-obligatorias, razonamiento) quedan para
- * un paso posterior con el mismo nivel de detalle.
+ * Contenido completo (los 9 componentes) para los 8 tipos de tarea.
  */
 export const suggestions = {
   'redaccion-textos': {
@@ -121,9 +114,9 @@ export const suggestions = {
         texto: 'No superar las 150 palabras en total.',
       },
       {
-        etiqueta: 'Temas a evitar',
+        etiqueta: 'Sin comparar con la competencia',
         texto:
-          'No mencionar todavía [dato sensible, ej: cifras internas, nombres de personas involucradas, fecha exacta de un cambio no confirmado].',
+          'No hacer comparaciones ni mencionar a otras marcas o proveedores, aunque el destinatario los nombre.',
       },
       {
         etiqueta: 'Sin jerga técnica',
@@ -553,6 +546,55 @@ export const suggestions = {
         texto: 'No reescribir funciones que no estén relacionadas con el problema, modificar solo lo necesario.',
       },
     ],
+    ejemplos: [
+      {
+        etiqueta: 'Convención de nombres',
+        texto:
+          'El resto del proyecto usa nombres de variables y funciones en inglés, en formato camelCase — seguí esa misma convención.',
+      },
+      {
+        etiqueta: 'Función de referencia',
+        texto:
+          'Una función ya escrita en este proyecto se ve así: recibe parámetros validados, hace una sola cosa y devuelve un resultado claro — mantené ese mismo estilo.',
+      },
+      {
+        etiqueta: 'Forma de manejar errores',
+        texto:
+          'En este proyecto los errores se manejan lanzando una excepción con un mensaje descriptivo, no devolviendo null o undefined en silencio.',
+      },
+    ],
+    'frases-obligatorias': [
+      {
+        etiqueta: 'Comentario de cabecera',
+        texto: 'Tiene que incluir un comentario breve arriba de la función explicando qué recibe y qué devuelve.',
+      },
+      {
+        etiqueta: 'Nombre de función definido',
+        texto: 'La función tiene que llamarse exactamente [nombre de función], para no romper el código que ya la usa.',
+      },
+      {
+        etiqueta: 'Manejo de errores explícito',
+        texto:
+          'Tiene que incluir manejo de errores explícito (validación o try/catch), no asumir que los datos de entrada siempre son válidos.',
+      },
+    ],
+    razonamiento: [
+      {
+        etiqueta: 'Explicar el enfoque antes del código',
+        texto:
+          'Antes de escribir el código, explicá en una o dos líneas qué enfoque vas a usar y por qué.',
+      },
+      {
+        etiqueta: 'Explicar la causa de un bug',
+        texto:
+          'Si estás corrigiendo un bug, explicá primero cuál era la causa exacta del problema antes de mostrar la solución.',
+      },
+      {
+        etiqueta: 'Alternativas descartadas',
+        texto:
+          'Después del código, mencioná si había otro enfoque posible y por qué elegiste este en vez de ese.',
+      },
+    ],
   },
 
   'resumen-documentos': {
@@ -644,6 +686,53 @@ export const suggestions = {
         etiqueta: 'Mantener términos clave',
         texto:
           'No traducir ni simplificar términos técnicos específicos que deban mantenerse tal cual.',
+      },
+    ],
+    ejemplos: [
+      {
+        etiqueta: 'Nivel de síntesis esperado',
+        texto:
+          "Un resumen anterior decía: 'El documento plantea tres opciones, de las cuales la segunda es la recomendada por menor costo' — ese nivel de síntesis es el esperado.",
+      },
+      {
+        etiqueta: 'Estructura de referencia',
+        texto:
+          'Los resúmenes anteriores empezaban con una frase que dice de qué trata el documento, y después listaban los puntos clave.',
+      },
+      {
+        etiqueta: 'Forma de citar el original',
+        texto:
+          'Cuando haga falta citar una frase textual del documento, usá comillas y aclará de qué parte del documento viene.',
+      },
+    ],
+    'frases-obligatorias': [
+      {
+        etiqueta: 'Aclaración de alcance',
+        texto: 'Tiene que aclarar al inicio que es un resumen y no el documento completo.',
+      },
+      {
+        etiqueta: 'Cierre con lo esencial',
+        texto: 'Tiene que cerrar remarcando cuál es el punto más importante de todo el documento.',
+      },
+      {
+        etiqueta: 'Nota de omisión',
+        texto:
+          "Si se deja afuera información relevante por espacio, tiene que aclararlo con una frase como 'se omiten detalles menores'.",
+      },
+    ],
+    razonamiento: [
+      {
+        etiqueta: 'Explicar el criterio de selección',
+        texto:
+          'Antes del resumen, explicá brevemente qué criterio usaste para decidir qué información era la más importante.',
+      },
+      {
+        etiqueta: 'Justificar qué se dejó afuera',
+        texto: 'Después del resumen, mencioná qué información dejaste afuera y por qué no era esencial.',
+      },
+      {
+        etiqueta: 'Señalar ambigüedades',
+        texto: 'Indicá si alguna parte del documento original era ambigua o daba lugar a más de una interpretación.',
       },
     ],
   },
@@ -742,6 +831,54 @@ export const suggestions = {
         texto: 'No cambiar el registro formal o informal del texto original al traducir.',
       },
     ],
+    ejemplos: [
+      {
+        etiqueta: 'Frase ya traducida antes',
+        texto:
+          'Una frase similar a esta ya se tradujo antes de una forma específica — seguí ese mismo criterio de traducción si aparece de nuevo.',
+      },
+      {
+        etiqueta: 'Términos que no se traducen',
+        texto:
+          'Términos como [nombre de producto o marca] no se traducen, se mantienen igual que en el idioma original.',
+      },
+      {
+        etiqueta: 'Estilo de la marca',
+        texto:
+          'Otros textos de esta marca ya traducidos usan un tono [ejemplo: cercano, formal, directo] — seguí esa misma línea.',
+      },
+    ],
+    'frases-obligatorias': [
+      {
+        etiqueta: 'Mantener nombres propios',
+        texto: 'Tiene que mantener sin traducir los nombres propios y de marca que aparezcan en el texto original.',
+      },
+      {
+        etiqueta: 'Formato de fechas y unidades',
+        texto:
+          'Las fechas y unidades tienen que adaptarse al formato de [idioma/país destino], no dejarse igual que en el original.',
+      },
+      {
+        etiqueta: 'Nota de términos ambiguos',
+        texto: 'Si un término no tiene traducción exacta, tiene que aclararlo entre corchetes junto a la opción elegida.',
+      },
+    ],
+    razonamiento: [
+      {
+        etiqueta: 'Explicar decisiones difíciles',
+        texto: 'Cuando una frase no tenga traducción literal clara, explicá brevemente qué decisión tomaste y por qué.',
+      },
+      {
+        etiqueta: 'Fidelidad vs. naturalidad',
+        texto:
+          'Indicá en qué partes priorizaste que suene natural en el idioma destino por sobre ser 100% literal, y por qué.',
+      },
+      {
+        etiqueta: 'Alternativas de traducción',
+        texto:
+          'Para los términos más ambiguos, mencioná una alternativa de traducción que consideraste y por qué elegiste la otra.',
+      },
+    ],
   },
 
   'brainstorming-ideas': {
@@ -837,6 +974,52 @@ export const suggestions = {
         texto: 'No dar más de [X] ideas, priorizando calidad por sobre cantidad.',
       },
     ],
+    ejemplos: [
+      {
+        etiqueta: 'Formato de idea de referencia',
+        texto:
+          'Una idea que funcionó bien en una sesión anterior se presentó en una línea, con el concepto y el "gancho" bien claros — podés usar ese mismo formato.',
+      },
+      {
+        etiqueta: 'Nivel de originalidad esperado',
+        texto:
+          'Buscamos ideas parecidas en espíritu a [ejemplo de campaña o proyecto de referencia], no algo completamente convencional.',
+      },
+      {
+        etiqueta: 'Tono de referencia',
+        texto:
+          'Un brainstorming anterior tiraba ideas del tipo "¿Y si hiciéramos...?" — mantené ese estilo informal y abierto.',
+      },
+    ],
+    'frases-obligatorias': [
+      {
+        etiqueta: 'Numerar cada idea',
+        texto: 'Cada idea tiene que estar numerada para poder referenciarla después en la conversación.',
+      },
+      {
+        etiqueta: 'Incluir el porqué',
+        texto: 'Cada idea tiene que venir con una razón breve de por qué podría funcionar para este objetivo puntual.',
+      },
+      {
+        etiqueta: 'Cierre con favorita',
+        texto: 'Al final tiene que indicar cuál de todas las ideas propuestas recomienda más y por qué.',
+      },
+    ],
+    razonamiento: [
+      {
+        etiqueta: 'Explicar el enfoque de generación',
+        texto:
+          'Antes de las ideas, explicá brevemente qué ángulos vas a explorar (ej: bajo costo, alto impacto, poco convencional).',
+      },
+      {
+        etiqueta: 'Justificar la variedad',
+        texto: 'Después de las ideas, indicá qué tan distintas son entre sí y si cubren enfoques opuestos a propósito.',
+      },
+      {
+        etiqueta: 'Riesgos de la idea favorita',
+        texto: 'Para la idea que más recomendás, mencioná también un riesgo o desventaja a tener en cuenta.',
+      },
+    ],
   },
 
   'revision-correccion': {
@@ -926,6 +1109,50 @@ export const suggestions = {
       {
         etiqueta: 'Mantener frases citadas',
         texto: 'No corregir frases que estén citadas textualmente entre comillas.',
+      },
+    ],
+    ejemplos: [
+      {
+        etiqueta: 'Nivel de corrección esperado',
+        texto:
+          'Un cambio típico sería prolijar una frase confusa sin reescribirla por completo — ese es el nivel de intervención esperado.',
+      },
+      {
+        etiqueta: 'Estilo a mantener',
+        texto: 'El texto original tiene un estilo [ejemplo], no cambiar eso al corregir, solo prolijar la redacción.',
+      },
+      {
+        etiqueta: 'Frases que no se tocan',
+        texto: 'Las frases citadas textualmente entre comillas no se corrigen ni se reformulan.',
+      },
+    ],
+    'frases-obligatorias': [
+      {
+        etiqueta: 'Marcar los cambios',
+        texto: 'Tiene que dejar en claro, aunque sea brevemente, qué tipo de cambios se hicieron (ortografía, redacción, estructura).',
+      },
+      {
+        etiqueta: 'Conservar términos clave',
+        texto: 'Los términos técnicos o nombres propios que aparecen en el original tienen que mantenerse igual en la versión corregida.',
+      },
+      {
+        etiqueta: 'Aclarar si algo no se entendió',
+        texto:
+          'Si alguna frase del original es ambigua y no se puede corregir sin cambiar el sentido, tiene que aclararlo en vez de adivinar.',
+      },
+    ],
+    razonamiento: [
+      {
+        etiqueta: 'Explicar los cambios principales',
+        texto: 'Después de corregir, explicá brevemente cuáles fueron los 2 o 3 cambios más importantes y por qué los hiciste.',
+      },
+      {
+        etiqueta: 'Justificar lo que no se cambió',
+        texto: 'Si dejaste alguna frase igual a pesar de que podría mejorarse, explicá por qué decidiste no tocarla.',
+      },
+      {
+        etiqueta: 'Nivel de intervención',
+        texto: 'Indicá si el texto necesitaba una corrección liviana o una reescritura más profunda, y por qué.',
       },
     ],
   },
