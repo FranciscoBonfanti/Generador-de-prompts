@@ -46,7 +46,7 @@
   margin-bottom: var(--space-lg);
 }
 
-@media (max-width: 1499px) {
+@media (max-width: 899px) {
   .app-columns {
     grid-template-columns: 1fr;
   }
