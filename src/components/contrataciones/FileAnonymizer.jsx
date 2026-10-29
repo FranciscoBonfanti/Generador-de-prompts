@@ -167,6 +167,13 @@ export function FileAnonymizer() {
                   personas y empresas.
                 </p>
               )}
+              {result.summary.aiStatus === 'skipped' && (
+                <p className="file-anonymizer__note file-anonymizer__note--warning">
+                  <AlertTriangle size={16} aria-hidden="true" /> El documento es demasiado largo para la
+                  pasada con IA: se anonimizó solo con patrones automáticos. Revisá a mano los nombres de
+                  personas y empresas.
+                </p>
+              )}
               {result.summary.format === 'pdf' && (
                 <p className="file-anonymizer__note">
                   En el PDF los datos se tapan en negro y cada página se convierte en imagen, para que el

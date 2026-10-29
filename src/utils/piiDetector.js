@@ -216,12 +216,23 @@ function escapeRegExp(text) {
 /**
  * Términos literales extra (ej. nombres que señaló la IA) como detectores de
  * menor prioridad que el regex. No matchean dentro de otra palabra.
+ *
+ * Se compilan una sola vez por lista: los anonimizadores llaman a
+ * detectPii por cada párrafo con la misma lista de términos.
  */
+const compiledTerms = new WeakMap()
 function termDetectors(extraTerms) {
-  return extraTerms.map((term) => ({
-    type: term.type,
-    regex: new RegExp(`(?<![${L}0-9])${escapeRegExp(term.text).replace(/\s+/g, '\\s+')}(?![${L}0-9])`, 'dgi'),
-  }))
+  if (extraTerms.length === 0) return []
+  if (!compiledTerms.has(extraTerms)) {
+    compiledTerms.set(
+      extraTerms,
+      extraTerms.map((term) => ({
+        type: term.type,
+        regex: new RegExp(`(?<![${L}0-9])${escapeRegExp(term.text).replace(/\s+/g, '\\s+')}(?![${L}0-9])`, 'dgi'),
+      })),
+    )
+  }
+  return compiledTerms.get(extraTerms)
 }
 
 /**

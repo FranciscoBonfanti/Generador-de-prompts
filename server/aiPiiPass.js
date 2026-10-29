@@ -21,9 +21,15 @@ const MODELS = [
   { name: 'gemini-3.5-flash', timeoutMs: 45_000 },
 ]
 const RETRYABLE_STATUS = new Set([429, 500, 503, 504])
-// Documentos largos se mandan en partes, cortando en saltos de línea.
+// Documentos largos se mandan en partes, cortando en saltos de línea. Topes
+// para acotar el costo por archivo en la cuenta de Google: si el documento
+// necesita más partes, la pasada con IA no se hace (status 'skipped': se
+// anonimiza con regex y se informa).
 const MAX_CHARS_PER_REQUEST = 60_000
+const MAX_CHUNKS = 8
+const MAX_CONCURRENT_REQUESTS = 3
 const MAX_TERM_LENGTH = 120
+const MAX_TERMS = 300
 
 export const aiTermTypes = ['nombre', 'organizacion', 'cargo', 'otro']
 
@@ -68,7 +74,10 @@ function splitIntoChunks(text) {
   return chunks
 }
 
-class RetryableError extends Error {}
+// Errores propios con mensajes sin contenido del documento (solo modelo y
+// estado): son los únicos cuyo mensaje se loguea.
+class AiPassError extends Error {}
+class RetryableError extends AiPassError {}
 
 async function requestTermsFrom(model, chunk, apiKey) {
   let response
@@ -92,10 +101,30 @@ async function requestTermsFrom(model, chunk, apiKey) {
     throw error
   }
   if (RETRYABLE_STATUS.has(response.status)) throw new RetryableError(`${model.name} respondió ${response.status}`)
-  if (!response.ok) throw new Error(`${model.name} respondió ${response.status}`)
+  if (!response.ok) throw new AiPassError(`${model.name} respondió ${response.status}`)
   const data = await response.json()
   const raw = data.candidates?.[0]?.content?.parts?.map((part) => part.text ?? '').join('') ?? ''
-  return { model: model.name, fragmentos: JSON.parse(raw).fragmentos ?? [] }
+  try {
+    return { model: model.name, fragmentos: JSON.parse(raw).fragmentos ?? [] }
+  } catch {
+    // El mensaje de JSON.parse incluye un pedazo del texto: no se propaga
+    // para que nunca llegue a los logs.
+    throw new AiPassError(`${model.name}: la respuesta no es JSON válido`)
+  }
+}
+
+/** Ejecuta `task` sobre cada elemento con a lo sumo `limit` en paralelo. */
+async function mapWithConcurrency(items, limit, task) {
+  const results = new Array(items.length)
+  let next = 0
+  async function worker() {
+    while (next < items.length) {
+      const index = next++
+      results[index] = await task(items[index])
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker))
+  return results
 }
 
 async function requestTerms(chunk, apiKey) {
@@ -114,15 +143,21 @@ async function requestTerms(chunk, apiKey) {
 
 /**
  * @param {string} text texto plano del documento
- * @returns {Promise<{ status: 'ok' | 'disabled' | 'error', terms: { text: string, type: string }[], models?: string[] }>}
+ * @returns {Promise<{ status: 'ok' | 'disabled' | 'skipped' | 'error', terms: { text: string, type: string }[], models?: string[] }>}
  */
 export async function detectExtraPiiWithAI(text) {
   const apiKey = process.env.GOOGLE_API_KEY
   if (!apiKey) return { status: 'disabled', terms: [] }
   if (!text.trim()) return { status: 'ok', terms: [] }
 
+  const chunks = splitIntoChunks(text)
+  if (chunks.length > MAX_CHUNKS) {
+    console.warn(`aiPiiPass: documento demasiado largo para la pasada con IA (${chunks.length} partes)`)
+    return { status: 'skipped', terms: [] }
+  }
+
   try {
-    const results = await Promise.all(splitIntoChunks(text).map((chunk) => requestTerms(chunk, apiKey)))
+    const results = await mapWithConcurrency(chunks, MAX_CONCURRENT_REQUESTS, (chunk) => requestTerms(chunk, apiKey))
     const lowerText = text.toLowerCase()
     const seen = new Set()
     const terms = []
@@ -136,11 +171,12 @@ export async function detectExtraPiiWithAI(text) {
       if (seen.has(key) || !lowerText.includes(key)) continue
       seen.add(key)
       terms.push({ text: value, type })
+      if (terms.length >= MAX_TERMS) break
     }
     return { status: 'ok', terms, models: [...new Set(results.map((result) => result.model))] }
   } catch (error) {
     // Nunca se loguea el contenido del documento, solo el tipo de falla.
-    console.error('aiPiiPass: falló la pasada con IA:', error?.name, error?.message)
+    console.error('aiPiiPass: falló la pasada con IA:', error instanceof AiPassError ? error.message : error?.name)
     return { status: 'error', terms: [] }
   }
 }
