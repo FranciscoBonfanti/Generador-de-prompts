@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { PromptProvider, usePromptContext } from "./context/PromptContext.jsx";
 import { IntroSection } from "./components/IntroSection.jsx";
 import { TaskTypeSelector } from "./components/TaskTypeSelector.jsx";
@@ -7,22 +8,19 @@ import { ComplementsSection } from "./components/ComplementsSection.jsx";
 import { PromptPreview } from "./components/PromptPreview.jsx";
 import { ThemeToggle } from "./components/ThemeToggle.jsx";
 import { OnboardingTour } from "./components/OnboardingTour.jsx";
-import { CornerDecoration } from "./components/CornerDecoration.jsx";
+import { ModeSwitch } from "./components/ModeSwitch.jsx";
+import { AppFooter } from "./components/AppFooter.jsx";
+import { ContratacionesApp } from "./components/contrataciones/ContratacionesApp.jsx";
 import "./App.css";
 
-function AppShell() {
-  const { state } = usePromptContext();
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", state.theme);
-  }, [state.theme]);
-
+function GenericShell() {
   return (
     <>
       <OnboardingTour />
 
       <main className="app-main">
         <div className="app-toolbar">
+          <ModeSwitch />
           <ThemeToggle />
         </div>
         <IntroSection />
@@ -34,38 +32,33 @@ function AppShell() {
         <ComplementsSection />
       </main>
 
-      <footer className="app-footer">
-        <CornerDecoration>
-          <div className="app-footer__text-wrap">
-            <p>
-              Fue diseñada para que puedas crear prompts experimentando con
-              distintas combinaciones y aplicar los ejemplos y ejercicios
-              propuestos durante la capacitación. Podrás probar y perfeccionar
-              tus prompts todas las veces que necesites a los fines de ir
-              aplicando los diferentes ejemplos.
-              Si querés hacer sugerencias sobre esta herramienta podés hacerlo
-              en 
-              <a
-                href="https://forms.gle/Mi9g3pvtUZAoiyAf6"
-                target="_blank"
-                rel="noopener noreferrer"
-                // style="text-decoration: none;"
-              >
-                <strong> este espacio</strong>
-              </a>
-              .
-            </p>
-          </div>
-        </CornerDecoration>
-      </footer>
+      <AppFooter />
     </>
+  );
+}
+
+// El tema (claro/oscuro) vive en el estado del modo genérico y se comparte
+// entre ambos modos; cada modo guarda su propio borrador por separado.
+function ThemedRoutes() {
+  const { state } = usePromptContext();
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", state.theme);
+  }, [state.theme]);
+
+  return (
+    <Routes>
+      <Route path="/" element={<GenericShell />} />
+      <Route path="/contrataciones" element={<ContratacionesApp />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 
 function App() {
   return (
     <PromptProvider>
-      <AppShell />
+      <ThemedRoutes />
     </PromptProvider>
   );
 }
