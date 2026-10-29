@@ -63,6 +63,7 @@ export async function handleAnonymize(request) {
       byType: summarizePii(result.findings),
       pagesWithoutText: result.pagesWithoutText ?? [],
       pagesWithAnnotations: result.pagesWithAnnotations ?? [],
+      aiStatus: result.aiStatus,
     }
     const fileName = outputName(request.headers.get('x-file-name'), format)
 

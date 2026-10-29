@@ -4,6 +4,7 @@ import { PDFDocument } from 'pdf-lib'
 import { createCanvas, GlobalFonts } from '@napi-rs/canvas'
 import { detectPii } from '../src/utils/piiDetector.js'
 import { userError } from './userError.js'
+import { detectExtraPiiWithAI } from './aiPiiPass.js'
 
 /**
  * Anonimiza un .pdf de forma irreversible.
@@ -139,9 +140,10 @@ function drawBoxes(context, viewport, boxes) {
 
 /**
  * @param {Buffer|Uint8Array} input contenido del .pdf
- * @returns {Promise<{ output: Buffer, findings: object[], pagesWithoutText: number[] }>}
+ * @param {{ findExtraTerms?: (text: string) => Promise<{ status: string, terms: object[] }> }} [options]
+ * @returns {Promise<{ output: Buffer, findings: object[], pagesWithoutText: number[], pagesWithAnnotations: number[], aiStatus: string }>}
  */
-export async function anonymizePdf(input) {
+export async function anonymizePdf(input, { findExtraTerms = detectExtraPiiWithAI } = {}) {
   const { getDocument, AnnotationMode } = await import('pdfjs-dist/legacy/build/pdf.mjs')
   const loadingTask = getDocument({
     data: new Uint8Array(input),
@@ -156,11 +158,15 @@ export async function anonymizePdf(input) {
   const findings = []
   const pagesWithoutText = []
   const pagesWithAnnotations = []
+  let aiStatus = 'disabled'
 
   try {
     if (source.numPages > MAX_PAGES) {
       throw userError(`El PDF tiene más de ${MAX_PAGES} páginas.`)
     }
+
+    // 1) Texto de todas las páginas, para que la IA vea el documento completo.
+    const pages = []
     for (let pageNumber = 1; pageNumber <= source.numPages; pageNumber++) {
       const page = await source.getPage(pageNumber)
       // Comentarios y campos de formulario tienen texto propio que no pasa
@@ -172,9 +178,15 @@ export async function anonymizePdf(input) {
       const content = await page.getTextContent()
       const items = content.items.filter((item) => typeof item.str === 'string')
       if (!items.some((item) => item.str.trim())) pagesWithoutText.push(pageNumber)
+      pages.push({ page, items, styles: content.styles, ...buildPageText(items) })
+    }
 
-      const { text, owner } = buildPageText(items)
-      const pageFindings = detectPii(text)
+    const ai = await findExtraTerms(pages.map((entry) => entry.text).join('\n'))
+    aiStatus = ai.status
+
+    // 2) Cada página se dibuja con los datos tapados.
+    for (const { page, items, styles, text, owner } of pages) {
+      const pageFindings = detectPii(text, ai.terms)
       findings.push(...pageFindings)
 
       // Páginas enormes (planos, láminas) se renderizan a menor escala para
@@ -192,7 +204,7 @@ export async function anonymizePdf(input) {
       drawBoxes(
         context,
         viewport,
-        pageFindings.flatMap((finding) => boxesFor(finding, items, owner, content.styles)),
+        pageFindings.flatMap((finding) => boxesFor(finding, items, owner, styles)),
       )
 
       const jpeg = await canvas.encode('jpeg', JPEG_QUALITY)
@@ -211,5 +223,11 @@ export async function anonymizePdf(input) {
   output.setCreator('Constructor de Prompts — Contrataciones Públicas')
   output.setProducer('')
 
-  return { output: Buffer.from(await output.save()), findings, pagesWithoutText, pagesWithAnnotations }
+  return {
+    output: Buffer.from(await output.save()),
+    findings,
+    pagesWithoutText,
+    pagesWithAnnotations,
+    aiStatus,
+  }
 }

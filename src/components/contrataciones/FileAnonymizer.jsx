@@ -100,7 +100,9 @@ export function FileAnonymizer() {
           <p className="complements-section__hint">
             Subí un .docx o .pdf (hasta 4 MB) y descargá una copia en el mismo formato con los datos
             sensibles reemplazados: CUIT/CUIL, DNI, correos, teléfonos, CBU/CVU, razones sociales,
-            números de expediente y domicilios. El archivo se procesa en el servidor y no se guarda.
+            números de expediente y domicilios. Además, una pasada con IA (Gemini, de Google) busca
+            nombres de personas y empresas que los patrones no reconocen: para eso el texto del
+            archivo se envía a la API de Google. El archivo no se guarda.
           </p>
 
           <div className="file-anonymizer__controls">
@@ -153,6 +155,18 @@ export function FileAnonymizer() {
                   ))}
                 </ul>
               )}
+              {result.summary.aiStatus === 'ok' && (
+                <p className="file-anonymizer__note">
+                  Incluye la pasada con IA (Gemini) para nombres de personas y organizaciones.
+                </p>
+              )}
+              {result.summary.aiStatus === 'error' && (
+                <p className="file-anonymizer__note file-anonymizer__note--warning">
+                  <AlertTriangle size={16} aria-hidden="true" /> La pasada con IA no estuvo disponible:
+                  el archivo se anonimizó solo con patrones automáticos. Revisá a mano los nombres de
+                  personas y empresas.
+                </p>
+              )}
               {result.summary.format === 'pdf' && (
                 <p className="file-anonymizer__note">
                   En el PDF los datos se tapan en negro y cada página se convierte en imagen, para que el
@@ -178,8 +192,8 @@ export function FileAnonymizer() {
                 <FileDown size={16} aria-hidden="true" /> Descargar {result.fileName}
               </a>
               <p className="file-anonymizer__note">
-                Revisá siempre el archivo antes de compartirlo: la detección automática no reconoce, por
-                ejemplo, nombres de personas.
+                Revisá siempre el archivo antes de compartirlo: la detección automática puede no
+                encontrar todo.
               </p>
             </div>
           )}

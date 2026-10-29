@@ -1,6 +1,7 @@
 import JSZip from 'jszip'
 import { detectPii } from '../src/utils/piiDetector.js'
 import { userError } from './userError.js'
+import { detectExtraPiiWithAI } from './aiPiiPass.js'
 
 /**
  * Anonimiza un .docx manteniendo el formato: no reconstruye el documento,
@@ -40,8 +41,11 @@ function encodeXmlAttribute(text) {
   return encodeXml(text).replace(/"/g, '&quot;')
 }
 
-/** Anonimiza el texto de una parte XML de Word. Devuelve { xml, findings }. */
-export function anonymizeWordXml(xml) {
+/**
+ * Anonimiza el texto de una parte XML de Word. `terms`: fragmentos extra
+ * señalados por la IA. Devuelve { xml, findings }.
+ */
+export function anonymizeWordXml(xml, terms = []) {
   const nodes = []
   for (const match of xml.matchAll(TEXT_NODE)) {
     nodes.push({
@@ -94,7 +98,7 @@ export function anonymizeWordXml(xml) {
       paragraphText += node.text
     })
 
-    const findings = detectPii(paragraphText)
+    const findings = detectPii(paragraphText, terms)
     if (findings.length === 0) continue
     allFindings.push(...findings)
 
@@ -159,11 +163,11 @@ function replaceFindings(text, findings) {
  * (Target="mailto:persona@dominio.com" en los .rels) y códigos de campo
  * (w:instr="HYPERLINK mailto:...").
  */
-function anonymizeAttributes(xml, attributePattern) {
+function anonymizeAttributes(xml, attributePattern, terms = []) {
   const findings = []
   const result = xml.replace(attributePattern, (whole, name, rawValue) => {
     const value = decodeXml(rawValue)
-    const valueFindings = detectPii(value)
+    const valueFindings = detectPii(value, terms)
     if (valueFindings.length === 0) return whole
     findings.push(...valueFindings)
     return `${name}="${encodeXmlAttribute(replaceFindings(value, valueFindings))}"`
@@ -175,11 +179,11 @@ function anonymizeAttributes(xml, attributePattern) {
  * Para partes de metadatos (propiedades del archivo, customXml): aplica la
  * detección a todo el texto entre etiquetas.
  */
-function anonymizeAllText(xml) {
+function anonymizeAllText(xml, terms = []) {
   const findings = []
   const result = xml.replace(/>([^<]+)</g, (whole, rawText) => {
     const text = decodeXml(rawText)
-    const textFindings = detectPii(text)
+    const textFindings = detectPii(text, terms)
     if (textFindings.length === 0) return whole
     findings.push(...textFindings)
     return `>${encodeXml(replaceFindings(text, textFindings))}<`
@@ -252,11 +256,30 @@ const WORD_XML = /^word\/.+\.xml$/
 const METADATA_XML = /^(?:docProps\/.+|customXml\/.+)\.xml$/
 const RELS_XML = /\.rels$/
 
+/** Texto plano del documento (un párrafo por línea) para la pasada con IA. */
+function plainText(contents) {
+  const lines = []
+  for (const [path, bytes] of contents) {
+    if (WORD_XML.test(path)) {
+      for (const paragraph of bytes.toString('utf8').split(PARAGRAPH_END)) {
+        const line = [...paragraph.matchAll(TEXT_NODE)].map((match) => decodeXml(match[3])).join('')
+        if (line.trim()) lines.push(line)
+      }
+    } else if (METADATA_XML.test(path)) {
+      for (const match of bytes.toString('utf8').matchAll(/>([^<]+)</g)) {
+        if (match[1].trim()) lines.push(decodeXml(match[1]))
+      }
+    }
+  }
+  return lines.join('\n')
+}
+
 /**
  * @param {Buffer|Uint8Array|ArrayBuffer} input contenido del .docx
- * @returns {Promise<{ output: Buffer, findings: object[] }>}
+ * @param {{ findExtraTerms?: (text: string) => Promise<{ status: string, terms: object[] }> }} [options]
+ * @returns {Promise<{ output: Buffer, findings: object[], aiStatus: string }>}
  */
-export async function anonymizeDocx(input) {
+export async function anonymizeDocx(input, { findExtraTerms = detectExtraPiiWithAI } = {}) {
   const zip = await JSZip.loadAsync(input)
   if (!zip.file('word/document.xml')) {
     throw userError('El archivo no parece un .docx válido (falta word/document.xml).')
@@ -264,6 +287,7 @@ export async function anonymizeDocx(input) {
   // Todo se lee una sola vez con el límite aplicado; el archivo de salida se
   // arma desde cero con estos contenidos ya verificados.
   const contents = await readAllEntriesLimited(zip)
+  const ai = await findExtraTerms(plainText(contents))
 
   const findings = []
   const output = new JSZip()
@@ -272,16 +296,16 @@ export async function anonymizeDocx(input) {
     if (WORD_XML.test(path)) {
       // Texto de todas las partes de Word (cuerpo, encabezados, pies,
       // notas, comentarios, glosario...) y los códigos de campo.
-      const text = anonymizeWordXml(bytes.toString('utf8'))
-      const fields = anonymizeAttributes(text.xml, /\b(w:instr)="([^"]*)"/g)
+      const text = anonymizeWordXml(bytes.toString('utf8'), ai.terms)
+      const fields = anonymizeAttributes(text.xml, /\b(w:instr)="([^"]*)"/g, ai.terms)
       findings.push(...text.findings, ...fields.findings)
       xml = clearPeopleMetadata(fields.xml)
     } else if (RELS_XML.test(path)) {
-      const result = anonymizeAttributes(bytes.toString('utf8'), /\b(Target)="([^"]*)"/g)
+      const result = anonymizeAttributes(bytes.toString('utf8'), /\b(Target)="([^"]*)"/g, ai.terms)
       findings.push(...result.findings)
       xml = result.xml
     } else if (METADATA_XML.test(path)) {
-      const result = anonymizeAllText(clearPeopleMetadata(bytes.toString('utf8')))
+      const result = anonymizeAllText(clearPeopleMetadata(bytes.toString('utf8')), ai.terms)
       findings.push(...result.findings)
       xml = result.xml
     }
@@ -289,5 +313,5 @@ export async function anonymizeDocx(input) {
   }
 
   const outputBytes = await output.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' })
-  return { output: outputBytes, findings }
+  return { output: outputBytes, findings, aiStatus: ai.status }
 }

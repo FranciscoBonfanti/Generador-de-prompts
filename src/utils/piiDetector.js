@@ -18,6 +18,12 @@ export const piiTypes = {
   dni: { label: 'DNI', placeholder: '[DNI]' },
   razonSocial: { label: 'Razón social', placeholder: '[RAZÓN SOCIAL]' },
   domicilio: { label: 'Domicilio', placeholder: '[DOMICILIO]' },
+  // Detectados por la pasada con IA del anonimizador de archivos
+  // (server/aiPiiPass.js), no por regex.
+  nombre: { label: 'Nombre de persona (IA)', placeholder: '[NOMBRE]' },
+  organizacion: { label: 'Organización (IA)', placeholder: '[ORGANIZACIÓN]' },
+  cargo: { label: 'Cargo (IA)', placeholder: '[CARGO]' },
+  otro: { label: 'Otro dato identificable (IA)', placeholder: '[DATO IDENTIFICABLE]' },
 }
 
 /**
@@ -203,15 +209,32 @@ const detectors = [
   },
 ]
 
+function escapeRegExp(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+/**
+ * Términos literales extra (ej. nombres que señaló la IA) como detectores de
+ * menor prioridad que el regex. No matchean dentro de otra palabra.
+ */
+function termDetectors(extraTerms) {
+  return extraTerms.map((term) => ({
+    type: term.type,
+    regex: new RegExp(`(?<![${L}0-9])${escapeRegExp(term.text).replace(/\s+/g, '\\s+')}(?![${L}0-9])`, 'dgi'),
+  }))
+}
+
 /**
  * Devuelve los hallazgos de `text`, sin superposiciones y ordenados por
  * posición: [{ type, label, placeholder, value, start, end }].
+ *
+ * `extraTerms`: [{ text, type }] fragmentos literales adicionales a tapar.
  */
-export function detectPii(text) {
+export function detectPii(text, extraTerms = []) {
   if (!text) return []
 
   const candidates = []
-  detectors.forEach((detector, priority) => {
+  ;[...detectors, ...termDetectors(extraTerms)].forEach((detector, priority) => {
     detector.regex.lastIndex = 0
     for (const match of text.matchAll(detector.regex)) {
       const [start, end] = detector.group ? match.indices[detector.group] : match.indices[0]
