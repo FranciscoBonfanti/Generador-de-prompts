@@ -204,23 +204,48 @@ function clearPeopleMetadata(xml) {
 }
 
 // Límites contra archivos "bomba" (un zip chico que al descomprimirse ocupa
-// gigas): se revisa el tamaño declarado de cada parte antes de leerla.
+// gigas). El tamaño que declara el zip lo escribe quien arma el archivo y
+// puede ser falso, así que se cuentan los bytes reales al descomprimir.
 const MAX_ENTRIES = 2000
 const MAX_UNCOMPRESSED_BYTES = 60 * 1024 * 1024
 
-function checkZipLimits(zip) {
+function tooLargeError() {
+  return userError('El .docx descomprimido supera el tamaño máximo admitido.')
+}
+
+/**
+ * Descomprime todas las partes en streaming contando bytes reales y corta
+ * apenas el total pasa el máximo. Devuelve Map<path, Uint8Array>.
+ */
+async function readAllEntriesLimited(zip) {
   const entries = Object.values(zip.files).filter((entry) => !entry.dir)
   if (entries.length > MAX_ENTRIES) {
     throw userError('El .docx tiene demasiadas partes internas.')
   }
+
+  const contents = new Map()
   let total = 0
   for (const entry of entries) {
-    // JSZip no expone el tamaño descomprimido de forma pública.
-    total += entry._data?.uncompressedSize ?? 0
-    if (total > MAX_UNCOMPRESSED_BYTES) {
-      throw userError('El .docx descomprimido supera el tamaño máximo admitido.')
-    }
+    const chunks = []
+    await new Promise((resolve, reject) => {
+      const stream = entry.internalStream('uint8array')
+      stream
+        .on('data', (chunk) => {
+          total += chunk.length
+          if (total > MAX_UNCOMPRESSED_BYTES) {
+            stream.pause()
+            reject(tooLargeError())
+            return
+          }
+          chunks.push(chunk)
+        })
+        .on('error', reject)
+        .on('end', resolve)
+        .resume()
+    })
+    contents.set(entry.name, Buffer.concat(chunks))
   }
+  return contents
 }
 
 const WORD_XML = /^word\/.+\.xml$/
@@ -236,35 +261,33 @@ export async function anonymizeDocx(input) {
   if (!zip.file('word/document.xml')) {
     throw userError('El archivo no parece un .docx válido (falta word/document.xml).')
   }
-  checkZipLimits(zip)
+  // Todo se lee una sola vez con el límite aplicado; el archivo de salida se
+  // arma desde cero con estos contenidos ya verificados.
+  const contents = await readAllEntriesLimited(zip)
 
   const findings = []
-  for (const path of Object.keys(zip.files)) {
-    const file = zip.file(path)
-    if (!file) continue
-
+  const output = new JSZip()
+  for (const [path, bytes] of contents) {
     let xml
     if (WORD_XML.test(path)) {
       // Texto de todas las partes de Word (cuerpo, encabezados, pies,
       // notas, comentarios, glosario...) y los códigos de campo.
-      const text = anonymizeWordXml(await file.async('string'))
+      const text = anonymizeWordXml(bytes.toString('utf8'))
       const fields = anonymizeAttributes(text.xml, /\b(w:instr)="([^"]*)"/g)
       findings.push(...text.findings, ...fields.findings)
       xml = clearPeopleMetadata(fields.xml)
     } else if (RELS_XML.test(path)) {
-      const result = anonymizeAttributes(await file.async('string'), /\b(Target)="([^"]*)"/g)
+      const result = anonymizeAttributes(bytes.toString('utf8'), /\b(Target)="([^"]*)"/g)
       findings.push(...result.findings)
       xml = result.xml
     } else if (METADATA_XML.test(path)) {
-      const result = anonymizeAllText(clearPeopleMetadata(await file.async('string')))
+      const result = anonymizeAllText(clearPeopleMetadata(bytes.toString('utf8')))
       findings.push(...result.findings)
       xml = result.xml
-    } else {
-      continue
     }
-    zip.file(path, xml)
+    output.file(path, xml ?? bytes)
   }
 
-  const output = await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' })
-  return { output, findings }
+  const outputBytes = await output.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' })
+  return { output: outputBytes, findings }
 }
