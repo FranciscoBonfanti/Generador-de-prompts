@@ -143,7 +143,7 @@ async function requestTerms(chunk, apiKey) {
 
 /**
  * @param {string} text texto plano del documento
- * @returns {Promise<{ status: 'ok' | 'disabled' | 'skipped' | 'error', terms: { text: string, type: string }[], models?: string[] }>}
+ * @returns {Promise<{ status: 'ok' | 'partial' | 'disabled' | 'skipped' | 'error', terms: { text: string, type: string }[], models?: string[] }>}
  */
 export async function detectExtraPiiWithAI(text) {
   const apiKey = process.env.GOOGLE_API_KEY
@@ -161,6 +161,7 @@ export async function detectExtraPiiWithAI(text) {
     const lowerText = text.toLowerCase()
     const seen = new Set()
     const terms = []
+    let truncated = false
     for (const fragmento of results.flatMap((result) => result.fragmentos)) {
       const value = String(fragmento?.texto ?? '').trim()
       const type = aiTermTypes.includes(fragmento?.tipo) ? fragmento.tipo : 'otro'
@@ -169,11 +170,16 @@ export async function detectExtraPiiWithAI(text) {
       // IA no puede agregar texto, solo señalar qué tapar.
       if (value.length < 3 || value.length > MAX_TERM_LENGTH || /[[\]]/.test(value)) continue
       if (seen.has(key) || !lowerText.includes(key)) continue
+      if (terms.length >= MAX_TERMS) {
+        // Lo que no entra en el tope queda sin tapar: se informa como
+        // 'partial' para que la UI pida revisión manual.
+        truncated = true
+        break
+      }
       seen.add(key)
       terms.push({ text: value, type })
-      if (terms.length >= MAX_TERMS) break
     }
-    return { status: 'ok', terms, models: [...new Set(results.map((result) => result.model))] }
+    return { status: truncated ? 'partial' : 'ok', terms, models: [...new Set(results.map((result) => result.model))] }
   } catch (error) {
     // Nunca se loguea el contenido del documento, solo el tipo de falla.
     console.error('aiPiiPass: falló la pasada con IA:', error instanceof AiPassError ? error.message : error?.name)

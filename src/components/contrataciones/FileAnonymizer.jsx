@@ -167,6 +167,13 @@ export function FileAnonymizer() {
                   personas y empresas.
                 </p>
               )}
+              {result.summary.aiStatus === 'partial' && (
+                <p className="file-anonymizer__note file-anonymizer__note--warning">
+                  <AlertTriangle size={16} aria-hidden="true" /> La IA encontró más datos de los que se
+                  pueden procesar por archivo: algunos nombres pueden haber quedado sin tapar. Revisá el
+                  archivo a mano antes de compartirlo.
+                </p>
+              )}
               {result.summary.aiStatus === 'skipped' && (
                 <p className="file-anonymizer__note file-anonymizer__note--warning">
                   <AlertTriangle size={16} aria-hidden="true" /> El documento es demasiado largo para la
