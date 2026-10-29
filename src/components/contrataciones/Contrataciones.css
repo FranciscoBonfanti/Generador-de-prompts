@@ -1,0 +1,584 @@
+/* Estilos propios del modo Contrataciones. Las tarjetas, barras y botones
+   reutilizan las clases del modo genérico; los colores de marca vienen de
+   las variables de .mode-contrataciones (styles/variables.css). */
+
+.mode-contrataciones {
+  color: var(--color-text);
+}
+
+.mode-contrataciones .gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* --- Intro --- */
+.contrata-intro__stripe {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-sf-stripe);
+  margin-bottom: var(--space-md);
+}
+
+.contrata-intro__title {
+  color: var(--color-heading);
+  font-size: clamp(1.5rem, 1rem + 2.5vw, 3rem);
+}
+
+/* --- Etapa y tarea --- */
+.etapa-tarea__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+@media (min-width: 720px) {
+  .etapa-tarea__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.etapa-tarea__field {
+  min-width: 0;
+}
+
+.etapa-tarea__label {
+  display: block;
+  margin-top: var(--space-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.etapa-tarea__field .task-type-selector__select {
+  margin-top: var(--space-xs);
+}
+
+/* --- Metaprompt --- */
+.metaprompt-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.metaprompt-panel__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.metaprompt-panel__checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  flex: 1 1 280px;
+  min-width: 0;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.metaprompt-panel__checkbox input {
+  margin-top: 0.3rem;
+  accent-color: var(--gradient-violet);
+  cursor: pointer;
+}
+
+.metaprompt-panel__checkbox-hint {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.metaprompt-panel__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.metaprompt-panel__toggle:hover {
+  background-color: var(--color-surface-alt);
+}
+
+.metaprompt-panel__editor {
+  margin-top: var(--space-md);
+}
+
+.metaprompt-panel__textarea {
+  min-height: 280px;
+  font-size: var(--font-size-sm);
+  line-height: 1.55;
+}
+
+.metaprompt-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.metaprompt-panel__status {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.prompt-preview__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --- Columna derecha: Prompt listo + Antes de usar --- */
+.contrata-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  min-width: 0;
+}
+
+.contrata-preview__box {
+  max-height: 360px;
+  min-height: 160px;
+}
+
+.contrata-preview__reminder {
+  margin: var(--space-xs) 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.contrata-preview__issues {
+  margin: 0 0 var(--space-sm);
+  padding-left: 1.1rem;
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+.contrata-preview__issues li + li {
+  margin-top: var(--space-xs);
+}
+
+.prompt-preview__warning.contrata-preview__warning--danger {
+  background-color: var(--color-danger-bg);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.prompt-preview__warning > svg {
+  flex-shrink: 0;
+}
+
+.antes-de-usar {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-lg);
+}
+
+.antes-de-usar__hint {
+  margin: var(--space-md) 0 var(--space-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.antes-de-usar__subtitle {
+  margin: var(--space-lg) 0 var(--space-sm);
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-heading);
+}
+
+.salvaguardas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  font-size: var(--font-size-sm);
+}
+
+.salvaguardas__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.salvaguardas__item svg {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.salvaguardas__item--on svg {
+  color: var(--color-success);
+}
+
+.salvaguardas__item--off {
+  color: var(--color-danger);
+}
+
+/* --- Checklists (documentación / antes de usar) --- */
+.contrata-checklist {
+  list-style: none;
+  margin: var(--space-sm) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  font-size: var(--font-size-sm);
+}
+
+.contrata-checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.contrata-checklist input {
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+  accent-color: var(--gradient-violet);
+  cursor: pointer;
+}
+
+.contrata-checklist label {
+  cursor: pointer;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* --- Tarjetas --- */
+.contrata-card__hint {
+  margin: var(--space-sm) 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.contrata-card__toggle--locked {
+  cursor: not-allowed;
+}
+
+.contrata-card__toggle--locked span {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.contrata-card__locked {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-surface-alt);
+  border-left: 4px solid var(--gradient-violet);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+}
+
+.contrata-card__locked svg {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  color: var(--gradient-violet);
+}
+
+.contrata-card__locked p {
+  margin: 0;
+}
+
+.contrata-card__locked-title {
+  font-weight: 700;
+}
+
+.contrata-card__locked-text {
+  margin-top: 2px !important;
+}
+
+.contrata-card__guided {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.contrata-card__guided-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.contrata-card__guided-field label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.contrata-card__guided-field input {
+  width: 100%;
+  min-width: 0;
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.contrata-card__guided-field input:hover {
+  border-color: var(--color-text-muted);
+}
+
+.contrata-card__presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+}
+
+.contrata-card__preset {
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  transition: border-color var(--transition-base), background-color var(--transition-base);
+}
+
+.contrata-card__preset:hover {
+  border-color: var(--gradient-violet);
+}
+
+.contrata-card__preset[aria-pressed='true'] {
+  border-color: var(--gradient-violet);
+  background-color: var(--color-surface-alt);
+  box-shadow: inset 0 0 0 1px var(--gradient-violet);
+}
+
+/* --- Aviso de datos sensibles --- */
+.pii-warning {
+  margin-top: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-warning-bg);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+}
+
+.pii-warning__header {
+  display: flex;
+  gap: var(--space-sm);
+  color: var(--color-warning);
+}
+
+.pii-warning__header svg {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.pii-warning__header p {
+  margin: 0;
+  color: var(--color-text);
+}
+
+.pii-warning__list {
+  list-style: none;
+  margin: var(--space-sm) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.pii-warning__item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: var(--space-sm);
+  border-top: 1px dashed var(--color-warning);
+}
+
+.pii-warning__type {
+  font-weight: 700;
+}
+
+.pii-warning__field {
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.pii-warning__snippet {
+  overflow-wrap: anywhere;
+  color: var(--color-text-muted);
+}
+
+.pii-warning__snippet mark {
+  padding: 0 2px;
+  border-radius: 3px;
+  background-color: #ffcb02;
+  color: #1b1f27;
+  font-weight: 600;
+}
+
+.pii-warning__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.pii-warning__actions button,
+.pii-warning__replace-all {
+  padding: 2px var(--space-sm);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.pii-warning__actions button:first-child,
+.pii-warning__replace-all {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.pii-warning__replace-all {
+  margin-top: var(--space-sm);
+}
+
+/* --- Freno a pedidos prohibidos --- */
+.prohibido-warning {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-danger-bg);
+  border: 2px solid var(--color-danger);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+}
+
+.prohibido-warning__icon {
+  flex-shrink: 0;
+  color: var(--color-danger);
+}
+
+.prohibido-warning p {
+  margin: 0;
+}
+
+.prohibido-warning__title {
+  font-weight: 800;
+  color: var(--color-danger);
+}
+
+.prohibido-warning__body {
+  margin-top: var(--space-xs);
+}
+
+.prohibido-warning__hint {
+  margin-top: var(--space-xs) !important;
+  color: var(--color-text-muted);
+}
+
+/* --- Anonimizador de archivos --- */
+.file-anonymizer__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.file-anonymizer__controls input[type='file'] {
+  flex: 1 1 240px;
+  min-width: 0;
+  max-width: 100%;
+  font-size: var(--font-size-sm);
+}
+
+.file-anonymizer__spinner {
+  animation: file-anonymizer-spin 1s linear infinite;
+}
+
+@keyframes file-anonymizer-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .file-anonymizer__spinner {
+    animation: none;
+  }
+}
+
+.file-anonymizer__result {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background-color: var(--color-surface-alt);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+}
+
+.file-anonymizer__result p {
+  margin: 0 0 var(--space-sm);
+}
+
+.file-anonymizer__result ul {
+  margin: 0 0 var(--space-sm);
+  padding-left: 1.1rem;
+}
+
+.file-anonymizer__note {
+  color: var(--color-text-muted);
+}
+
+.file-anonymizer__note--warning {
+  display: flex;
+  gap: var(--space-xs);
+  color: var(--color-warning);
+}
+
+.file-anonymizer__note--warning svg {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.file-anonymizer__download {
+  margin-bottom: var(--space-sm);
+  text-decoration: none;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+/* Botones con texto largo ("Restaurar versión del curso") en pantallas chicas. */
+@media (max-width: 480px) {
+  .metaprompt-panel__actions .prompt-preview__button {
+    white-space: normal;
+  }
+}
+
+/* El estilo base de estos botones no define color y en modo oscuro el
+   botón secundario ("Seguir revisando", "Cancelar") quedaba ilegible. */
+.mode-contrataciones .prompt-preview__warning-actions button {
+  color: var(--color-text);
+}
+
+.mode-contrataciones .prompt-preview__warning-actions button:first-child {
+  color: var(--color-primary-contrast);
+}

@@ -9,6 +9,9 @@ import {
   Quote,
   Brain,
   CircleHelp,
+  Users,
+  Flag,
+  Paperclip,
 } from 'lucide-react'
 
 /**
@@ -25,6 +28,10 @@ const iconMap = {
   Ban,
   Quote,
   Brain,
+  // Solo en el modo Contrataciones.
+  Users,
+  Flag,
+  Paperclip,
 }
 
 export function resolveIcon(iconName) {
