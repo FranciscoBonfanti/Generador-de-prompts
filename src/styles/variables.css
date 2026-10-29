@@ -1,8 +1,20 @@
 /*
-  Sistema visual degradado naranja→violeta→azul (Version1.png).
-  El degradado (--gradient-brand) es fijo en ambos temas: no cambiar acá
-  con dark mode, solo las superficies/textos de alrededor.
+  Variables en dos bloques independientes, para poder cambiar la paleta de
+  un modo sin afectar al otro:
+
+  1. MODO GENÉRICO (constructor de prompts, ruta /): :root + [data-theme='dark'].
+  2. MODO CONTRATACIONES (ruta /contrataciones): .mode-contrataciones, que
+     redefine solo lo de marca a partir del Manual de Marca Santa Fe
+     Provincia. Todo lo que no redefine (espaciados, radios, superficies)
+     lo hereda del bloque 1.
 */
+
+/* ==========================================================================
+   1. MODO GENÉRICO
+   Sistema visual degradado naranja→violeta→azul (Version1.png).
+   El degradado (--gradient-brand) es fijo en ambos temas: no cambiar acá
+   con dark mode, solo las superficies/textos de alrededor.
+   ========================================================================== */
 :root {
   --color-bg: #f7f7f9;
   --color-surface: #ffffff;
@@ -35,6 +47,10 @@
   --gradient-magenta: #d61c7f;
   --gradient-violet: #7a35c8;
   --gradient-blue: #3c3ae5;
+  /* Fondo de las barras de título (.gradient-bar) y texto con degradado. */
+  --gradient-bar: linear-gradient(96deg, #ff7402 0%, #e42153 47%, #3c3ae5 100%);
+  --gradient-text: linear-gradient(90deg, #ff7402, #e42153, #3c3ae5);
+  --color-heading: #494963;
 
   --font-family-base: 'Inter', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
   --font-size-sm: 0.875rem;
@@ -83,4 +99,60 @@
 
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-modal: 0 12px 32px rgba(0, 0, 0, 0.55);
+}
+
+/* ==========================================================================
+   2. MODO CONTRATACIONES PÚBLICAS
+   Paleta cromática oficial del Manual de Marca Santa Fe Provincia
+   (SF_Provincia_Manual_de_Marca_1.0, dic. 2023). No se usa el isotipo: se
+   mantienen los cuadraditos abstractos, ahora con los colores oficiales.
+   ========================================================================== */
+.mode-contrataciones {
+  --sf-amarillo: #ffcb02;
+  --sf-naranja: #ff7402;
+  --sf-rosa: #ff6d7e;
+  --sf-magenta: #e42153;
+  --sf-azul: #3c3ae5;
+  --sf-gris: #494963;
+  --sf-gris-texto: #4a4a49;
+
+  --color-text: var(--sf-gris-texto);
+  --color-heading: var(--sf-gris);
+  --color-primary: var(--sf-azul);
+  --color-primary-hover: #2c2ab8;
+  --color-danger: #c41a45;
+  --color-danger-bg: #fdecf0;
+  --color-success: #0f7a55;
+
+  --gradient-bar: linear-gradient(96deg, var(--sf-naranja) 0%, var(--sf-rosa) 30%, var(--sf-magenta) 55%, var(--sf-azul) 100%);
+  --gradient-brand: linear-gradient(90deg, var(--sf-naranja) 0%, var(--sf-magenta) 50%, var(--sf-azul) 100%);
+  --gradient-text: linear-gradient(90deg, var(--sf-naranja), var(--sf-magenta), var(--sf-azul));
+  /* Franja de marca con los cinco colores oficiales. */
+  --gradient-sf-stripe: linear-gradient(
+    90deg,
+    var(--sf-amarillo) 0% 20%,
+    var(--sf-naranja) 20% 40%,
+    var(--sf-rosa) 40% 60%,
+    var(--sf-magenta) 60% 80%,
+    var(--sf-azul) 80% 100%
+  );
+
+  /* Cuadraditos de CornerDecoration y acentos de tarjetas. */
+  --gradient-orange: var(--sf-amarillo);
+  --gradient-coral: var(--sf-naranja);
+  --gradient-magenta: var(--sf-rosa);
+  --gradient-violet: var(--sf-magenta);
+  --gradient-blue: var(--sf-azul);
+}
+
+[data-theme='dark'] .mode-contrataciones {
+  --color-text: #eef0f4;
+  --color-heading: #eef0f4;
+  --color-primary: #8f8ef2;
+  --color-primary-hover: #a9a8f5;
+  --color-danger: #ff8fa3;
+  --color-danger-bg: #3d1622;
+  --color-success: #4fd1a1;
+  /* Más claro que el magenta oficial para mantener contraste sobre fondo oscuro. */
+  --gradient-violet: var(--sf-rosa);
 }

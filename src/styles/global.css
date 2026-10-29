@@ -81,7 +81,7 @@ select:focus-visible,
   max-width: 100%;
   padding: 10px 20px;
   border-radius: 12px;
-  background: linear-gradient(96deg, #ff7402 0%, #e42153 47%, #3c3ae5 100%);
+  background: var(--gradient-bar);
   box-shadow: 0 6px 18px rgba(228, 33, 83, 0.22);
 }
 
@@ -114,6 +114,12 @@ select:focus-visible,
 
   .gradient-bar__title {
     font-size: 18px;
+    white-space: normal;
+  }
+
+  /* "4 de 5 esenciales completados" no entra en una línea a 320 px. */
+  .gradient-bar__badge {
+    flex-shrink: 1;
     white-space: normal;
   }
 }

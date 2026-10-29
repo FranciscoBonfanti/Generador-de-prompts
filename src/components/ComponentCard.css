@@ -24,7 +24,9 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-sm);
-  flex-wrap: nowrap;
+  /* En pantallas muy chicas el switch baja a otra línea si una palabra
+     larga ("Restricciones") no entra al lado. */
+  flex-wrap: wrap;
 }
 
 .component-card__title-group {
@@ -39,10 +41,13 @@
   flex-shrink: 0;
 }
 
+/* Sin nowrap: en 320-375 px "Frases obligatorias" + "Incluir" no entran en
+   una línea y ensanchaban la tarjeta (scroll horizontal). En anchos donde
+   entra, se ve igual que antes. */
 .component-card__title {
   font-size: var(--font-size-md);
   font-weight: 700;
-  white-space: nowrap;
+  overflow-wrap: break-word;
 }
 
 .component-card__toggle {
