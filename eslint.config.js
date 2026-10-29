@@ -35,4 +35,12 @@ export default [
       ],
     },
   },
+  // Funciones serverless (api/), su lógica (server/) y la config de Vite
+  // corren en Node.
+  {
+    files: ['api/**/*.js', 'server/**/*.js', 'vite.config.js'],
+    languageOptions: {
+      globals: { ...globals.node },
+    },
+  },
 ]

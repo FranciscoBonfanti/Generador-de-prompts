@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }],
+  "functions": {
+    "api/anonimizar.js": {
+      "includeFiles": "node_modules/pdfjs-dist/{legacy/build,standard_fonts}/**"
+    }
+  }
+}
