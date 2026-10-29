@@ -1,0 +1,157 @@
+.contrataciones-promo {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: var(--space-lg);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: 0 10px 30px rgba(60, 58, 229, 0.12), var(--shadow-card);
+}
+
+/* Franja con los cinco colores oficiales del Manual de Marca. */
+.contrataciones-promo__stripe {
+  height: 8px;
+  background: var(--gradient-sf-stripe);
+}
+
+.contrataciones-promo__body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-lg) clamp(var(--space-md), 3vw, var(--space-xl));
+}
+
+.contrataciones-promo__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  color: #ffffff;
+  background: var(--gradient-brand);
+  box-shadow: 0 8px 20px rgba(228, 33, 83, 0.28);
+}
+
+.contrataciones-promo__content {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.contrataciones-promo__eyebrow {
+  margin: 0 0 var(--space-xs);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--sf-magenta);
+}
+
+.contrataciones-promo__title {
+  margin: 0;
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  font-weight: 800;
+  color: var(--color-heading);
+}
+
+.contrataciones-promo__text {
+  margin: var(--space-sm) 0 0;
+  max-width: 60ch;
+  color: var(--color-text-muted);
+}
+
+.contrataciones-promo__features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-sm);
+  margin: var(--space-md) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contrataciones-promo__features li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 0.3rem 0.75rem;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  background-color: var(--color-surface-alt);
+  border-radius: var(--radius-pill);
+}
+
+.contrataciones-promo__features svg {
+  flex-shrink: 0;
+  color: var(--sf-magenta);
+}
+
+/* Botón principal: el protagonista de la sección. */
+.contrataciones-promo__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  flex-shrink: 0;
+  padding: 1rem 1.75rem;
+  font-size: var(--font-size-md);
+  font-weight: 800;
+  text-decoration: none;
+  color: #ffffff;
+  background: var(--gradient-brand);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 10px 24px rgba(228, 33, 83, 0.35);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), filter var(--transition-base);
+}
+
+.contrataciones-promo__cta:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+  box-shadow: 0 14px 30px rgba(228, 33, 83, 0.42);
+}
+
+.contrataciones-promo__cta svg {
+  transition: transform var(--transition-base);
+}
+
+.contrataciones-promo__cta:hover svg {
+  transform: translateX(4px);
+}
+
+.contrataciones-promo__cta:focus-visible {
+  outline: 3px solid var(--sf-azul);
+  outline-offset: 3px;
+}
+
+@media (max-width: 720px) {
+  .contrataciones-promo__cta {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .contrataciones-promo__icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+  }
+
+  .contrataciones-promo__cta {
+    padding: 0.875rem 1.25rem;
+    font-size: var(--font-size-base);
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contrataciones-promo__cta,
+  .contrataciones-promo__cta svg {
+    transition: none;
+  }
+
+  .contrataciones-promo__cta:hover,
+  .contrataciones-promo__cta:hover svg {
+    transform: none;
+  }
+}

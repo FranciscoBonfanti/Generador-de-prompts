@@ -15,3 +15,39 @@
 .mode-switch:hover {
   background-color: var(--color-surface-alt);
 }
+
+/* Hacia Contrataciones: botón destacado con el degradado de marca Santa Fe
+   (colores literales porque en el modo genérico no están las variables
+   --sf-*). */
+.mode-switch--to-contrataciones {
+  gap: var(--space-sm);
+  padding: 0.55rem 1.1rem;
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, #ff7402 0%, #e42153 50%, #3c3ae5 100%);
+  box-shadow: 0 6px 16px rgba(228, 33, 83, 0.3);
+  transition: transform var(--transition-base), filter var(--transition-base);
+}
+
+.mode-switch--to-contrataciones:hover {
+  background: linear-gradient(90deg, #ff7402 0%, #e42153 50%, #3c3ae5 100%);
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+/* De vuelta al genérico: secundario, pero con más presencia que un link. */
+.mode-switch--back {
+  padding: 0.5rem 1rem;
+  font-size: var(--font-size-base);
+  border-radius: var(--radius-pill);
+  border-width: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mode-switch--to-contrataciones:hover {
+    transform: none;
+  }
+}
