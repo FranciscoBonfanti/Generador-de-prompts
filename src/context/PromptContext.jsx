@@ -17,7 +17,6 @@ function buildInitialState() {
   return {
     taskTypeId: taskTypes[0].id,
     componentState: buildInitialComponentState(),
-    theme: 'light',
     onboardingSeen: false,
   }
 }
@@ -63,13 +62,6 @@ export function PromptProvider({ children }) {
     [setState],
   )
 
-  const setTheme = useCallback(
-    (theme) => {
-      setState((prev) => ({ ...prev, theme }))
-    },
-    [setState],
-  )
-
   const markOnboardingSeen = useCallback(() => {
     setState((prev) => ({ ...prev, onboardingSeen: true }))
   }, [setState])
@@ -84,7 +76,6 @@ export function PromptProvider({ children }) {
       setTaskTypeId,
       setComponentContent,
       toggleComponentActive,
-      setTheme,
       markOnboardingSeen,
       resetAll,
     }),
@@ -93,7 +84,6 @@ export function PromptProvider({ children }) {
       setTaskTypeId,
       setComponentContent,
       toggleComponentActive,
-      setTheme,
       markOnboardingSeen,
       resetAll,
     ],

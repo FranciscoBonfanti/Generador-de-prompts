@@ -572,13 +572,3 @@
     white-space: normal;
   }
 }
-
-/* El estilo base de estos botones no define color y en modo oscuro el
-   botón secundario ("Seguir revisando", "Cancelar") quedaba ilegible. */
-.mode-contrataciones .prompt-preview__warning-actions button {
-  color: var(--color-text);
-}
-
-.mode-contrataciones .prompt-preview__warning-actions button:first-child {
-  color: var(--color-primary-contrast);
-}

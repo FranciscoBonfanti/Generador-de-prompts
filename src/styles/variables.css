@@ -2,7 +2,7 @@
   Variables en dos bloques independientes, para poder cambiar la paleta de
   un modo sin afectar al otro:
 
-  1. MODO GENÉRICO (constructor de prompts, ruta /): :root + [data-theme='dark'].
+  1. MODO GENÉRICO (constructor de prompts, ruta /): :root.
   2. MODO CONTRATACIONES (ruta /contrataciones): .mode-contrataciones, que
      redefine solo lo de marca a partir del Manual de Marca Santa Fe
      Provincia. Todo lo que no redefine (espaciados, radios, superficies)
@@ -12,8 +12,6 @@
 /* ==========================================================================
    1. MODO GENÉRICO
    Sistema visual degradado naranja→violeta→azul (Version1.png).
-   El degradado (--gradient-brand) es fijo en ambos temas: no cambiar acá
-   con dark mode, solo las superficies/textos de alrededor.
    ========================================================================== */
 :root {
   --color-bg: #f7f7f9;
@@ -79,27 +77,6 @@
   --transition-base: 180ms ease;
 }
 
-[data-theme='dark'] {
-  --color-bg: #14161c;
-  --color-surface: #1d2029;
-  --color-surface-alt: #262a35;
-  --color-border: #383e4d;
-  --color-text: #eef0f4;
-  --color-text-muted: #a3a9b7;
-  --color-primary: #6f8fed;
-  --color-primary-hover: #8ba3f2;
-  --color-primary-contrast: #10131a;
-  --color-accent: #3cc9a0;
-  --color-danger: #e5776a;
-  --color-warning: #e0af52;
-  --color-warning-bg: #3a2f17;
-
-  --color-essential-badge: #6f8fed;
-  --color-complement-badge: #a3a9b7;
-
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-modal: 0 12px 32px rgba(0, 0, 0, 0.55);
-}
 
 /* ==========================================================================
    2. MODO CONTRATACIONES PÚBLICAS
@@ -143,16 +120,4 @@
   --gradient-magenta: var(--sf-rosa);
   --gradient-violet: var(--sf-magenta);
   --gradient-blue: var(--sf-azul);
-}
-
-[data-theme='dark'] .mode-contrataciones {
-  --color-text: #eef0f4;
-  --color-heading: #eef0f4;
-  --color-primary: #8f8ef2;
-  --color-primary-hover: #a9a8f5;
-  --color-danger: #ff8fa3;
-  --color-danger-bg: #3d1622;
-  --color-success: #4fd1a1;
-  /* Más claro que el magenta oficial para mantener contraste sobre fondo oscuro. */
-  --gradient-violet: var(--sf-rosa);
 }

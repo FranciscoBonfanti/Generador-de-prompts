@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { ContratacionesProvider } from '../../context/ContratacionesContext.jsx'
-import { ThemeToggle } from '../ThemeToggle.jsx'
 import { ModeSwitch } from '../ModeSwitch.jsx'
 import { AppFooter } from '../AppFooter.jsx'
 import { ContrataIntro } from './ContrataIntro.jsx'
@@ -28,7 +27,6 @@ export function ContratacionesApp() {
         <main className="app-main">
           <div className="app-toolbar">
             <ModeSwitch />
-            <ThemeToggle />
           </div>
           <ContrataIntro />
           <EtapaTareaSelector />
