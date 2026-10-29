@@ -62,6 +62,7 @@ export async function handleAnonymize(request) {
       total: result.findings.length,
       byType: summarizePii(result.findings),
       pagesWithoutText: result.pagesWithoutText ?? [],
+      pagesWithAnnotations: result.pagesWithAnnotations ?? [],
     }
     const fileName = outputName(request.headers.get('x-file-name'), format)
 
@@ -77,7 +78,12 @@ export async function handleAnonymize(request) {
     })
   } catch (error) {
     console.error('anonimizar: error procesando archivo', format, error?.message)
-    return errorResponse(422, 'No se pudo procesar el archivo. Verificá que no esté dañado ni protegido con contraseña.')
+    return errorResponse(
+      422,
+      error?.expose
+        ? error.message
+        : 'No se pudo procesar el archivo. Verificá que no esté dañado ni protegido con contraseña.',
+    )
   }
 }
 

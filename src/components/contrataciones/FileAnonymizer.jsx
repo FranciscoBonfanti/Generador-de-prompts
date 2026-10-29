@@ -167,6 +167,13 @@ export function FileAnonymizer() {
                   detectar nada: revisalas a mano.
                 </p>
               )}
+              {result.summary.pagesWithAnnotations?.length > 0 && (
+                <p className="file-anonymizer__note file-anonymizer__note--warning">
+                  <AlertTriangle size={16} aria-hidden="true" /> Páginas con comentarios o campos de
+                  formulario: {result.summary.pagesWithAnnotations.join(', ')}. Por seguridad no se
+                  incluyeron en el PDF anonimizado: si los necesitás, completalos a mano.
+                </p>
+              )}
               <a className="prompt-preview__button file-anonymizer__download" href={result.url} download={result.fileName}>
                 <FileDown size={16} aria-hidden="true" /> Descargar {result.fileName}
               </a>

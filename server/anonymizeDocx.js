@@ -1,5 +1,6 @@
 import JSZip from 'jszip'
 import { detectPii } from '../src/utils/piiDetector.js'
+import { userError } from './userError.js'
 
 /**
  * Anonimiza un .docx manteniendo el formato: no reconstruye el documento,
@@ -19,8 +20,6 @@ const PARAGRAPH_END = /<\/w:p>/g
 // Elementos que Word muestra como espacio entre dos nodos de texto.
 const VISUAL_BREAK = /<w:(?:tab|br|cr)\b[^>]*\/>/
 
-const XML_PARTS = /^word\/(?:document|header\d*|footer\d*|footnotes|endnotes|comments)\.xml$/
-const RELS_PARTS = /^word\/_rels\/[^/]+\.rels$/
 
 function decodeXml(text) {
   return text
@@ -146,33 +145,87 @@ export function anonymizeWordXml(xml) {
   return { xml: result, findings: allFindings }
 }
 
+function replaceFindings(text, findings) {
+  let result = text
+  for (const finding of [...findings].sort((a, b) => b.start - a.start)) {
+    result = result.slice(0, finding.start) + finding.placeholder + result.slice(finding.end)
+  }
+  return result
+}
+
 /**
- * Los hipervínculos guardan su destino fuera del texto (ej.
- * Target="mailto:persona@dominio.com" en document.xml.rels): también se
- * anonimizan, si no el dato seguiría en el archivo aunque no se vea.
+ * Anonimiza el valor de los atributos indicados. Cubre datos que viven
+ * fuera del texto visible: destinos de hipervínculos
+ * (Target="mailto:persona@dominio.com" en los .rels) y códigos de campo
+ * (w:instr="HYPERLINK mailto:...").
  */
-function anonymizeRelationships(xml) {
+function anonymizeAttributes(xml, attributePattern) {
   const findings = []
-  const result = xml.replace(/Target="([^"]*)"/g, (whole, rawTarget) => {
-    const target = decodeXml(rawTarget)
-    const targetFindings = detectPii(target)
-    if (targetFindings.length === 0) return whole
-    findings.push(...targetFindings)
-    let anonymized = target
-    for (const finding of [...targetFindings].sort((a, b) => b.start - a.start)) {
-      anonymized = anonymized.slice(0, finding.start) + finding.placeholder + anonymized.slice(finding.end)
-    }
-    return `Target="${encodeXmlAttribute(anonymized)}"`
+  const result = xml.replace(attributePattern, (whole, name, rawValue) => {
+    const value = decodeXml(rawValue)
+    const valueFindings = detectPii(value)
+    if (valueFindings.length === 0) return whole
+    findings.push(...valueFindings)
+    return `${name}="${encodeXmlAttribute(replaceFindings(value, valueFindings))}"`
   })
   return { xml: result, findings }
 }
 
-/** Autor y "modificado por" del archivo identifican a una persona. */
-function clearAuthorMetadata(xml) {
+/**
+ * Para partes de metadatos (propiedades del archivo, customXml): aplica la
+ * detección a todo el texto entre etiquetas.
+ */
+function anonymizeAllText(xml) {
+  const findings = []
+  const result = xml.replace(/>([^<]+)</g, (whole, rawText) => {
+    const text = decodeXml(rawText)
+    const textFindings = detectPii(text)
+    if (textFindings.length === 0) return whole
+    findings.push(...textFindings)
+    return `>${encodeXml(replaceFindings(text, textFindings))}<`
+  })
+  return { xml: result, findings }
+}
+
+/**
+ * Nombres de personas guardados como metadatos: autor del archivo, autores
+ * de comentarios y de cambios controlados (w:author, w:initials, también en
+ * word/people.xml), empresa y responsable. El regex no reconoce nombres
+ * propios, así que se vacían siempre.
+ */
+const AUTHOR_ATTRIBUTE = /\b((?:w\d*):(?:author|initials|userId|providerId))="[^"]*"/g
+function clearPeopleMetadata(xml) {
   return xml
+    .replace(AUTHOR_ATTRIBUTE, '$1=""')
     .replace(/(<dc:creator>)[^<]*(<\/dc:creator>)/, '$1$2')
     .replace(/(<cp:lastModifiedBy>)[^<]*(<\/cp:lastModifiedBy>)/, '$1$2')
+    .replace(/(<Company>)[^<]*(<\/Company>)/, '$1$2')
+    .replace(/(<Manager>)[^<]*(<\/Manager>)/, '$1$2')
 }
+
+// Límites contra archivos "bomba" (un zip chico que al descomprimirse ocupa
+// gigas): se revisa el tamaño declarado de cada parte antes de leerla.
+const MAX_ENTRIES = 2000
+const MAX_UNCOMPRESSED_BYTES = 60 * 1024 * 1024
+
+function checkZipLimits(zip) {
+  const entries = Object.values(zip.files).filter((entry) => !entry.dir)
+  if (entries.length > MAX_ENTRIES) {
+    throw userError('El .docx tiene demasiadas partes internas.')
+  }
+  let total = 0
+  for (const entry of entries) {
+    // JSZip no expone el tamaño descomprimido de forma pública.
+    total += entry._data?.uncompressedSize ?? 0
+    if (total > MAX_UNCOMPRESSED_BYTES) {
+      throw userError('El .docx descomprimido supera el tamaño máximo admitido.')
+    }
+  }
+}
+
+const WORD_XML = /^word\/.+\.xml$/
+const METADATA_XML = /^(?:docProps\/.+|customXml\/.+)\.xml$/
+const RELS_XML = /\.rels$/
 
 /**
  * @param {Buffer|Uint8Array|ArrayBuffer} input contenido del .docx
@@ -181,25 +234,35 @@ function clearAuthorMetadata(xml) {
 export async function anonymizeDocx(input) {
   const zip = await JSZip.loadAsync(input)
   if (!zip.file('word/document.xml')) {
-    throw new Error('El archivo no parece un .docx válido (falta word/document.xml).')
+    throw userError('El archivo no parece un .docx válido (falta word/document.xml).')
   }
+  checkZipLimits(zip)
 
   const findings = []
   for (const path of Object.keys(zip.files)) {
     const file = zip.file(path)
     if (!file) continue
 
-    if (XML_PARTS.test(path)) {
-      const result = anonymizeWordXml(await file.async('string'))
+    let xml
+    if (WORD_XML.test(path)) {
+      // Texto de todas las partes de Word (cuerpo, encabezados, pies,
+      // notas, comentarios, glosario...) y los códigos de campo.
+      const text = anonymizeWordXml(await file.async('string'))
+      const fields = anonymizeAttributes(text.xml, /\b(w:instr)="([^"]*)"/g)
+      findings.push(...text.findings, ...fields.findings)
+      xml = clearPeopleMetadata(fields.xml)
+    } else if (RELS_XML.test(path)) {
+      const result = anonymizeAttributes(await file.async('string'), /\b(Target)="([^"]*)"/g)
       findings.push(...result.findings)
-      zip.file(path, result.xml)
-    } else if (RELS_PARTS.test(path)) {
-      const result = anonymizeRelationships(await file.async('string'))
+      xml = result.xml
+    } else if (METADATA_XML.test(path)) {
+      const result = anonymizeAllText(clearPeopleMetadata(await file.async('string')))
       findings.push(...result.findings)
-      zip.file(path, result.xml)
-    } else if (path === 'docProps/core.xml') {
-      zip.file(path, clearAuthorMetadata(await file.async('string')))
+      xml = result.xml
+    } else {
+      continue
     }
+    zip.file(path, xml)
   }
 
   const output = await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' })
