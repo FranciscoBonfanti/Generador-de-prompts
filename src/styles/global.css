@@ -123,3 +123,41 @@ select:focus-visible,
     white-space: normal;
   }
 }
+
+/* Áreas táctiles de al menos 44 px en pantallas chicas (pautas WCAG 2.5.5 /
+   Apple HIG). En escritorio se mantienen los tamaños compactos. */
+@media (max-width: 640px) {
+  .prompt-preview__button,
+  .prompt-preview__warning-actions button,
+  .component-card__suggestions-button,
+  .component-card__info-button,
+  .component-card__toggle,
+  .metaprompt-panel__toggle,
+  .contrata-card__preset,
+  .contrata-card__guided-field input,
+  .task-type-selector__select,
+  .mode-switch,
+  .complements-section__toggle,
+  .pii-warning__actions button,
+  .pii-warning__replace-all,
+  .onboarding-tour button,
+  .file-anonymizer__controls input[type='file'] {
+    min-height: 44px;
+  }
+
+  .example-modal__close {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .contrata-checklist li,
+  .metaprompt-panel__checkbox {
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .contrata-checklist input,
+  .metaprompt-panel__checkbox input {
+    margin-top: 0;
+  }
+}
