@@ -39,6 +39,7 @@ function buildInitialState() {
  */
 function withDefaults(stored) {
   const initial = buildInitialState()
+  if (!stored || typeof stored !== 'object') return initial
   return {
     ...initial,
     ...stored,

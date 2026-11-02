@@ -21,10 +21,37 @@ function buildInitialState() {
   }
 }
 
+/**
+ * Completa un estado guardado con lo que falte (un borrador de una versión
+ * anterior, o un componente nuevo), sin pisar lo que escribió la persona.
+ * Sin esto, un borrador con otra forma dejaba la página en blanco.
+ */
+function withDefaults(stored) {
+  const initial = buildInitialState()
+  if (!stored || typeof stored !== 'object') return initial
+  const componentState = { ...initial.componentState }
+  for (const [id, entry] of Object.entries(stored.componentState ?? {})) {
+    if (!componentState[id]) continue
+    componentState[id] = {
+      content: typeof entry?.content === 'string' ? entry.content : '',
+      active: entry?.active ?? true,
+    }
+  }
+  const taskTypeId = taskTypes.some((taskType) => taskType.id === stored.taskTypeId)
+    ? stored.taskTypeId
+    : initial.taskTypeId
+  return { ...initial, ...stored, taskTypeId, componentState }
+}
+
 const PromptContext = createContext(null)
 
 export function PromptProvider({ children }) {
-  const [state, setState] = useLocalStorage(STORAGE_KEY, buildInitialState())
+  const [storedState, setStoredState] = useLocalStorage(STORAGE_KEY, buildInitialState())
+  const state = useMemo(() => withDefaults(storedState), [storedState])
+  const setState = useCallback(
+    (updater) => setStoredState((prev) => updater(withDefaults(prev))),
+    [setStoredState],
+  )
 
   const setTaskTypeId = useCallback(
     (taskTypeId) => {
@@ -66,8 +93,9 @@ export function PromptProvider({ children }) {
     setState((prev) => ({ ...prev, onboardingSeen: true }))
   }, [setState])
 
+  // Reiniciar borra el borrador pero no vuelve a mostrar el tour.
   const resetAll = useCallback(() => {
-    setState(buildInitialState())
+    setState((prev) => ({ ...buildInitialState(), onboardingSeen: prev.onboardingSeen }))
   }, [setState])
 
   const value = useMemo(
