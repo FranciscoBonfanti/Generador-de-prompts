@@ -37,6 +37,12 @@ export function FileAnonymizer() {
       setError('Solo se aceptan archivos .docx o .pdf.')
       return
     }
+    if (selected.size === 0) {
+      setFile(null)
+      setStatus('error')
+      setError('El archivo está vacío.')
+      return
+    }
     if (selected.size > MAX_BYTES) {
       setFile(null)
       setStatus('error')
@@ -158,6 +164,13 @@ export function FileAnonymizer() {
               {result.summary.aiStatus === 'ok' && (
                 <p className="file-anonymizer__note">
                   Incluye la pasada con IA (Gemini) para nombres de personas y organizaciones.
+                </p>
+              )}
+              {result.summary.aiStatus === 'disabled' && (
+                <p className="file-anonymizer__note file-anonymizer__note--warning">
+                  <AlertTriangle size={16} aria-hidden="true" /> La pasada con IA no está activada en este
+                  servidor: el archivo se anonimizó solo con patrones automáticos. Revisá a mano los nombres
+                  de personas y empresas.
                 </p>
               )}
               {result.summary.aiStatus === 'error' && (
