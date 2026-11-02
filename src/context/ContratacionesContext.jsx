@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useMemo } from 'react'
 import { contrataComponentDefs } from '../data/contrataciones/componentDefs.js'
 import { etapas, getTareasForEtapa } from '../data/contrataciones/etapas.js'
-import { METAPROMPT_CURSO } from '../data/metaprompt.js'
+import { METAPROMPT_CURSO, METAPROMPT_CURSO_ANTERIORES } from '../data/metaprompt.js'
 import { useLocalStorage } from '../hooks/useLocalStorage.js'
 
 // Claves propias del modo Contrataciones: el borrador del modo genérico
@@ -52,7 +52,8 @@ const ContratacionesContext = createContext(null)
 
 export function ContratacionesProvider({ children }) {
   const [storedState, setState] = useLocalStorage(STORAGE_KEY, buildInitialState())
-  const [metaprompt, setMetaprompt] = useLocalStorage(METAPROMPT_STORAGE_KEY, METAPROMPT_CURSO)
+  const [storedMetaprompt, setMetaprompt] = useLocalStorage(METAPROMPT_STORAGE_KEY, METAPROMPT_CURSO)
+  const metaprompt = METAPROMPT_CURSO_ANTERIORES.includes(storedMetaprompt) ? METAPROMPT_CURSO : storedMetaprompt
   const state = useMemo(() => withDefaults(storedState), [storedState])
 
   const update = useCallback(

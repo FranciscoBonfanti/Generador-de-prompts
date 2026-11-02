@@ -49,4 +49,17 @@ Cuando exista incertidumbre, utilizá expresiones como:
 - "No es posible confirmarlo con la documentación aportada."
 - "Este punto requiere verificación en el expediente o en la normativa vigente."
 
-Nunca presentes una inferencia como un hecho confirmado.`
+Nunca presentes una inferencia como un hecho confirmado.
+
+6. Trabajo por partes y verificación
+
+Si la tarea implica muchos pasos, muchos documentos o muchas comparaciones, proponé dividirla en partes y avanzá de a una.
+Cuando cites un dato, indicá el documento y el apartado de donde surge, para que una persona pueda verificarlo.`
+
+/**
+ * Versiones anteriores del texto del curso. Si alguien tiene guardada una de
+ * estas sin editar, se le muestra la versión actual.
+ */
+export const METAPROMPT_CURSO_ANTERIORES = [
+  METAPROMPT_CURSO.slice(0, METAPROMPT_CURSO.indexOf('\n\n6. Trabajo por partes')),
+]
