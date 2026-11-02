@@ -1,5 +1,5 @@
 .app-footer {
-  max-width: 1800px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: var(--space-md) clamp(1rem, 4vw, 4rem) var(--space-lg);
 }
@@ -52,6 +52,16 @@
   }
 }
 
+/* En dos columnas, "Prompt listo" acompaña el scroll de las tarjetas en vez
+   de dejar un hueco vacío debajo. Solo en el modo genérico: la columna
+   derecha de Contrataciones es más alta que la pantalla. */
+@media (min-width: 900px) {
+  .app-columns > .prompt-preview {
+    position: sticky;
+    top: var(--space-md);
+  }
+}
+
 .app-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -61,7 +71,7 @@
 }
 
 .app-main {
-  max-width: 1800px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: var(--space-lg) clamp(1rem, 4vw, 4rem);
 }

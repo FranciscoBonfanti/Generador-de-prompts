@@ -309,7 +309,8 @@
 
 .contrata-card__guided {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  /* Hasta 2 columnas: con 4 campos, 3 columnas dejaban uno solo abajo. */
+  grid-template-columns: repeat(auto-fit, minmax(max(min(100%, 260px), calc(50% - var(--space-sm))), 1fr));
   gap: var(--space-sm);
   margin-top: var(--space-sm);
 }

@@ -35,4 +35,10 @@
   .complements-section__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  /* Con una cantidad impar de tarjetas, la última ocupa la fila entera en
+     vez de quedar sola y descolgada a la mitad. */
+  .complements-section__grid > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
 }
