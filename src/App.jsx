@@ -6,7 +6,6 @@ import { EssentialsSection } from "./components/EssentialsSection.jsx";
 import { ComplementsSection } from "./components/ComplementsSection.jsx";
 import { PromptPreview } from "./components/PromptPreview.jsx";
 import { OnboardingTour } from "./components/OnboardingTour.jsx";
-import { ModeSwitch } from "./components/ModeSwitch.jsx";
 import { ContratacionesPromo } from "./components/ContratacionesPromo.jsx";
 import { AppFooter } from "./components/AppFooter.jsx";
 import { ContratacionesApp } from "./components/contrataciones/ContratacionesApp.jsx";
@@ -18,9 +17,6 @@ function GenericShell() {
       <OnboardingTour />
 
       <main className="app-main">
-        <div className="app-toolbar">
-          <ModeSwitch />
-        </div>
         <IntroSection />
         <ContratacionesPromo />
         <TaskTypeSelector />

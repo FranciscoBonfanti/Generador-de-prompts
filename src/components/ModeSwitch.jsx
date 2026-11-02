@@ -1,22 +1,17 @@
-import { Link, useLocation } from 'react-router-dom'
-import { ArrowLeft, ArrowRight, Landmark } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ArrowLeft } from 'lucide-react'
 import './ModeSwitch.css'
 
-/** Link para pasar del constructor genérico al modo Contrataciones y viceversa. */
+/**
+ * Link para volver del modo Contrataciones al constructor genérico. En el
+ * sentido inverso el acceso es la sección ContratacionesPromo de la página
+ * principal (un solo acceso por sentido).
+ */
 export function ModeSwitch() {
-  const { pathname } = useLocation()
-  const inContrataciones = pathname.startsWith('/contrataciones')
-
-  return inContrataciones ? (
+  return (
     <Link to="/" className="mode-switch mode-switch--back">
       <ArrowLeft size={18} aria-hidden="true" />
       <span>Constructor genérico</span>
-    </Link>
-  ) : (
-    <Link to="/contrataciones" className="mode-switch mode-switch--to-contrataciones">
-      <Landmark size={18} aria-hidden="true" />
-      <span>Modo Contrataciones Públicas</span>
-      <ArrowRight size={16} aria-hidden="true" />
     </Link>
   )
 }
