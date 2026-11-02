@@ -70,7 +70,7 @@ export function PromptPreview() {
 
       <div className="prompt-preview__body">
         <div className="prompt-preview__main">
-          <div className="prompt-preview__box">
+          <div className="prompt-preview__box" tabIndex={0} role="region" aria-label="Prompt armado">
             <p className="prompt-preview__text">
               {prompt || 'Completá los componentes esenciales para ver acá el prompt armado.'}
             </p>
