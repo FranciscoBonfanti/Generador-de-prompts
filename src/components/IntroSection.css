@@ -19,7 +19,7 @@
 
 .intro-section__title {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-family-base);
   font-weight: 800;
   font-size: 3rem;
   color: #494963;

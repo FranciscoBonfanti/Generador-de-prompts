@@ -50,7 +50,7 @@
   --gradient-text: linear-gradient(90deg, #ff7402, #e42153, #3c3ae5);
   --color-heading: #494963;
 
-  --font-family-base: 'Inter', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  --font-family-base: 'Inter', 'Inter Fallback', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
   --font-size-md: 1.125rem;
