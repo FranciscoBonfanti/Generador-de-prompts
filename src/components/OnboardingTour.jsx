@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { usePromptContext } from '../context/PromptContext.jsx'
+import { useModalDialog } from '../hooks/useModalDialog.js'
 import './OnboardingTour.css'
 
 const steps = [
@@ -19,16 +20,21 @@ const steps = [
 
 export function OnboardingTour() {
   const { state, markOnboardingSeen } = usePromptContext()
-  const [stepIndex, setStepIndex] = useState(0)
-
   if (state.onboardingSeen) return null
+  return <TourDialog onDone={markOnboardingSeen} />
+}
+
+// Esc equivale a "Saltear".
+function TourDialog({ onDone }) {
+  const [stepIndex, setStepIndex] = useState(0)
+  const dialogRef = useModalDialog(onDone)
 
   const step = steps[stepIndex]
   const isLastStep = stepIndex === steps.length - 1
 
   return (
     <div className="onboarding-tour__backdrop" role="presentation">
-      <div className="onboarding-tour" role="dialog" aria-modal="true" aria-labelledby="onboarding-tour-title">
+      <div ref={dialogRef} className="onboarding-tour" role="dialog" aria-modal="true" aria-labelledby="onboarding-tour-title">
         <h2 id="onboarding-tour-title">{step.title}</h2>
         <p>{step.text}</p>
 
@@ -42,13 +48,14 @@ export function OnboardingTour() {
         </div>
 
         <div className="onboarding-tour__actions">
-          <button type="button" className="onboarding-tour__skip" onClick={markOnboardingSeen}>
+          <button type="button" className="onboarding-tour__skip" onClick={onDone}>
             Saltear
           </button>
           <button
             type="button"
             className="onboarding-tour__next"
-            onClick={() => (isLastStep ? markOnboardingSeen() : setStepIndex((i) => i + 1))}
+            data-autofocus
+            onClick={() => (isLastStep ? onDone() : setStepIndex((i) => i + 1))}
           >
             {isLastStep ? 'Entendido' : 'Siguiente'}
           </button>

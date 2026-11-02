@@ -3,6 +3,7 @@ import { getTareaById } from '../../data/contrataciones/etapas.js'
 import { getContrataSuggestions } from '../../data/contrataciones/suggestions.js'
 import { getContrataComponentDef } from '../../data/contrataciones/componentDefs.js'
 import { formatContrataLines } from '../../utils/contratacionesFormatter.js'
+import { useModalDialog } from '../../hooks/useModalDialog.js'
 import '../ExampleModal.css'
 
 // Componentes que se muestran en el ejemplo (mismos que el ejemplo de
@@ -32,10 +33,12 @@ function buildExampleState(state) {
 export function ContrataExampleModal({ state, onClose }) {
   const tarea = getTareaById(state.tareaId)
   const example = formatContrataLines(buildExampleState(state))
+  const dialogRef = useModalDialog(onClose)
 
   return (
     <div className="example-modal__backdrop" role="presentation" onClick={onClose}>
       <div
+        ref={dialogRef}
         className="example-modal"
         role="dialog"
         aria-modal="true"
@@ -48,7 +51,7 @@ export function ContrataExampleModal({ state, onClose }) {
             <X size={20} aria-hidden="true" />
           </button>
         </header>
-        <pre className="example-modal__text">{example}</pre>
+        <pre className="example-modal__text" tabIndex={0}>{example}</pre>
         <p className="example-modal__hint">
           Esto es solo una referencia, no reemplaza lo que ya estés escribiendo.
         </p>

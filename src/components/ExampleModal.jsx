@@ -1,15 +1,18 @@
 import { X } from 'lucide-react'
 import { getFullExampleFor } from '../data/fullExamples.js'
 import { getTaskTypeById } from '../data/taskTypes.js'
+import { useModalDialog } from '../hooks/useModalDialog.js'
 import './ExampleModal.css'
 
 export function ExampleModal({ taskTypeId, onClose }) {
   const example = getFullExampleFor(taskTypeId)
   const taskType = getTaskTypeById(taskTypeId)
+  const dialogRef = useModalDialog(onClose)
 
   return (
     <div className="example-modal__backdrop" role="presentation" onClick={onClose}>
       <div
+        ref={dialogRef}
         className="example-modal"
         role="dialog"
         aria-modal="true"
@@ -29,7 +32,7 @@ export function ExampleModal({ taskTypeId, onClose }) {
         </header>
 
         {example ? (
-          <pre className="example-modal__text">{example}</pre>
+          <pre className="example-modal__text" tabIndex={0}>{example}</pre>
         ) : (
           <p className="example-modal__empty">
             Todavía no hay un ejemplo cargado para este tipo de tarea.
